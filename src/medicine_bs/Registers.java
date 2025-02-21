@@ -118,6 +118,11 @@ public class Registers extends javax.swing.JFrame {
         Login_Panel.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 230, -1));
 
         genderField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Female", "Male" }));
+        genderField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genderFieldActionPerformed(evt);
+            }
+        });
         Login_Panel.add(genderField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 230, 40));
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
@@ -183,6 +188,10 @@ public class Registers extends javax.swing.JFrame {
         
         connectDB = new connectDB()
     }//GEN-LAST:event_registerButtonMouseClicked
+
+    private void genderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genderFieldActionPerformed
     
     
     /**
