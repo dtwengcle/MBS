@@ -137,6 +137,11 @@ public class LOGIN extends javax.swing.JFrame {
         reg.setForeground(new java.awt.Color(102, 0, 102));
         reg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         reg.setText("Click here to register");
+        reg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                regMouseClicked(evt);
+            }
+        });
         Login_Panel.add(reg, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 560, 150, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/image1.png"))); // NOI18N
@@ -172,6 +177,13 @@ public class LOGIN extends javax.swing.JFrame {
     private void ufeldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ufeldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ufeldActionPerformed
+
+    private void regMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_regMouseClicked
+        Registers reg = new Registers();
+        reg.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_regMouseClicked
 
     /**
      * @param args the command line arguments

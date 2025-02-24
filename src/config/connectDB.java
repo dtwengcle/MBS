@@ -1,52 +1,50 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package config;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-/**
- *
- * @author mikel
- */
 public class connectDB {
     private Connection connect;
-
-       
+    
     public connectDB(){
-        try{
-            connect = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/db_name_here", "root", "");
-        }catch(SQLException ex){
-                System.out.println("Can't connect to database: "+ex.getMessage());
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/deguma", "root", "");
+        } 
+        catch (SQLException ex) {
+            System.out.println("Can't connect to database: " + ex.getMessage());
         }
     }
-            
-    public ResultSet getData(String sql) throws SQLException{
-        Statement stmt = (Statement) connect.createStatement();
-        ResultSet rst = stmt.executeQuery(sql);
-        return rst;
+    
+    public Connection getConnection() {
+        return connect;
     }
     
-    public int insertData(String sql){
+    public ResultSet getData(String sql) throws SQLException {
+        Statement stmt = connect.createStatement();
+        return stmt.executeQuery(sql);
+    }
+    
+    public int InsertData(String sql){
         int result;
         try{
             PreparedStatement pst = connect.prepareStatement(sql);
             pst.executeUpdate();
-            System.out.println("Inserted Successfully!");
+            System.out.println("Inserted Successfully! ");
             pst.close();
-            result =1;
+            result = 1;
         }catch(SQLException ex){
             System.out.println("Connection Error: "+ex);
-            result =0;
+            result = 0;
         }
         return result;
+    }
+
+    public PreparedStatement prepareStatement(String checkSql) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
         
 }

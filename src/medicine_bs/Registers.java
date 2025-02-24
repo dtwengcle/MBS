@@ -5,7 +5,15 @@
  */
 package medicine_bs;
 
+import config.connectDB;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -42,6 +50,7 @@ public class Registers extends javax.swing.JFrame {
         emailField = new javax.swing.JTextField();
         email = new javax.swing.JLabel();
         genderField = new javax.swing.JComboBox<>();
+        create_acc = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         registerButton = new javax.swing.JButton();
         background = new javax.swing.JLabel();
@@ -125,9 +134,19 @@ public class Registers extends javax.swing.JFrame {
         });
         Login_Panel.add(genderField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 230, 40));
 
+        create_acc.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
+        create_acc.setForeground(new java.awt.Color(102, 0, 102));
+        create_acc.setText("Click here to Sign in");
+        create_acc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                create_accMouseClicked(evt);
+            }
+        });
+        Login_Panel.add(create_acc, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 150, -1));
+
         jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
-        jLabel1.setText("Already have an acount? Sign in ");
-        Login_Panel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 500, 220, -1));
+        jLabel1.setText("Already have an acount? ");
+        Login_Panel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 500, 170, -1));
 
         registerButton.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         registerButton.setText("Register");
@@ -178,20 +197,94 @@ public class Registers extends javax.swing.JFrame {
 
     private void registerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMouseClicked
         
-        String name = nameField.getText().trim();
+                // Get user input and trim spaces
+        String u_name = nameField.getText().trim();
         String usern = usernameField.getText().trim();
-        String gender = (String) genderField.getSelectedItem();
+        String genderSelected = (genderField.getSelectedItem() != null) ? genderField.getSelectedItem().toString() : "";
         String email = emailField.getText().trim();
-        String pass = passField.getText().trim();
-        
-        String sql = "INSERT INTO `user` (`name`, `username`, `gender`, `email`, `password`) VALUES (name, usern, gender, email, pass)";
-        
-        connectDB = new connectDB()
+        String pass = passField.getText().trim(); // TODO: Hash password before saving
+
+        // Validate inputs
+        if (u_name.isEmpty() || usern.isEmpty() || genderSelected.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All fields are required!", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Database Connection
+        connectDB con = new connectDB();
+        Connection cn = con.getConnection();
+
+        if (cn == null) {
+            JOptionPane.showMessageDialog(null, "Database connection failed!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // **Check if email already exists**
+            String checkEmailSql = "SELECT COUNT(*) FROM user WHERE u_email = ?";
+            try (PreparedStatement emailPst = cn.prepareStatement(checkEmailSql)) {
+                emailPst.setString(1, email);
+                try (ResultSet rsEmail = emailPst.executeQuery()) {
+                    if (rsEmail.next() && rsEmail.getInt(1) > 0) {
+                        JOptionPane.showMessageDialog(null, "Email already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            // **Check if username already exists**
+            String checkUsernameSql = "SELECT COUNT(*) FROM user WHERE u_username = ?";
+            try (PreparedStatement usernamePst = cn.prepareStatement(checkUsernameSql)) {
+                usernamePst.setString(1, usern);
+                try (ResultSet rsUsername = usernamePst.executeQuery()) {
+                    if (rsUsername.next() && rsUsername.getInt(1) > 0) {
+                        JOptionPane.showMessageDialog(null, "Username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            // **Insert user data into the database**
+            String insertSql = "INSERT INTO user (u_fname, u_username, u_email, u_password, u_gender) VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement pst = cn.prepareStatement(insertSql)) {
+                pst.setString(1, u_name);
+                pst.setString(2, usern);
+                pst.setString(3, email);
+                pst.setString(4, pass); // TODO: Hash password before saving
+                pst.setString(5, genderSelected);
+
+                int result = pst.executeUpdate();
+                if (result == 1) {
+                    JOptionPane.showMessageDialog(null, "Registered Successfully!");
+                    new LOGIN().setVisible(true);
+                    SwingUtilities.getWindowAncestor(nameField).dispose(); // Close the registration form
+                } else {
+                    JOptionPane.showMessageDialog(null, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (cn != null) cn.close(); // Ensure connection is closed
+            } catch (SQLException ex) {
+                Logger.getLogger(Registers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+}
+
+
     }//GEN-LAST:event_registerButtonMouseClicked
 
     private void genderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_genderFieldActionPerformed
+
+    private void create_accMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_create_accMouseClicked
+        LOGIN log = new LOGIN();
+        log.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_create_accMouseClicked
     
     
     /**
@@ -233,6 +326,7 @@ public class Registers extends javax.swing.JFrame {
     private javax.swing.JPanel Login_Panel;
     private javax.swing.JLabel background;
     private javax.swing.JLabel conpass;
+    private javax.swing.JLabel create_acc;
     private javax.swing.JLabel email;
     private javax.swing.JTextField emailField;
     private javax.swing.JComboBox<String> genderField;
