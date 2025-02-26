@@ -1,21 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package medicine_bs;
 
+import Administration.Admin_Dashboard;
+import Staff.Staff_Dashboard;
+import config.connectDB;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import static java.time.Clock.system;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author mikel
- */
+
+
+
 public class LOGIN extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LOGIN
-     */
+  
     public LOGIN() {
         initComponents();
     }
@@ -34,8 +37,7 @@ public class LOGIN extends javax.swing.JFrame {
     private void initComponents() {
 
         Login_Panel = new javax.swing.JPanel();
-        Ttile = new javax.swing.JLabel();
-        ufeld = new javax.swing.JTextField();
+        ufield = new javax.swing.JTextField();
         user = new javax.swing.JLabel();
         pfield = new javax.swing.JPasswordField();
         pass = new javax.swing.JLabel();
@@ -46,33 +48,30 @@ public class LOGIN extends javax.swing.JFrame {
         log = new javax.swing.JLabel();
         new_user = new javax.swing.JLabel();
         reg = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         welcome = new javax.swing.JLabel();
-        Background = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        Ttile = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        Login_Panel.setBackground(new java.awt.Color(255, 153, 153));
         Login_Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Ttile.setFont(new java.awt.Font("Arial Black", 1, 23)); // NOI18N
-        Ttile.setForeground(new java.awt.Color(0, 102, 102));
-        Ttile.setText("MEDICINE BILLING SYSTEM");
-        Login_Panel.add(Ttile, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 170, 410, 60));
-
-        ufeld.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
-        ufeld.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ufeld.addActionListener(new java.awt.event.ActionListener() {
+        ufield.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
+        ufield.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ufield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ufeldActionPerformed(evt);
+                ufieldActionPerformed(evt);
             }
         });
-        Login_Panel.add(ufeld, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, 240, 40));
+        Login_Panel.add(ufield, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 240, 40));
 
         user.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
-        user.setForeground(new java.awt.Color(0, 102, 102));
         user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         user.setText("Username");
-        Login_Panel.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 240, -1));
+        Login_Panel.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 240, -1));
 
         pfield.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         pfield.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -81,57 +80,78 @@ public class LOGIN extends javax.swing.JFrame {
                 pfieldActionPerformed(evt);
             }
         });
-        Login_Panel.add(pfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 240, 40));
+        Login_Panel.add(pfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 240, 40));
 
         pass.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
-        pass.setForeground(new java.awt.Color(0, 102, 102));
         pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pass.setText("Password");
-        Login_Panel.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, 240, -1));
+        Login_Panel.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 240, -1));
 
         role.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         role.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Staff" }));
-        Login_Panel.add(role, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 350, 100, 40));
+        Login_Panel.add(role, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, 100, 40));
 
         ex.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         ex.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ex.setText("EXIT");
+        ex.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                exMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                exMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout exitLayout = new javax.swing.GroupLayout(exit);
         exit.setLayout(exitLayout);
         exitLayout.setHorizontalGroup(
             exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(ex, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
         );
         exitLayout.setVerticalGroup(
             exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(ex, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        Login_Panel.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, 90, 30));
+        Login_Panel.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 70, 30));
 
         log.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         log.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         log.setText("LOGIN");
+        log.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout loginLayout = new javax.swing.GroupLayout(login);
         login.setLayout(loginLayout);
         loginLayout.setHorizontalGroup(
             loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(log, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(log, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
         );
         loginLayout.setVerticalGroup(
             loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(log, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        Login_Panel.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 460, 90, 30));
+        Login_Panel.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 330, 70, 30));
 
         new_user.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
         new_user.setForeground(new java.awt.Color(0, 102, 102));
         new_user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         new_user.setText("New user? ");
-        Login_Panel.add(new_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 560, 80, -1));
+        Login_Panel.add(new_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 90, 20));
 
         reg.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
         reg.setForeground(new java.awt.Color(102, 0, 102));
@@ -142,29 +162,42 @@ public class LOGIN extends javax.swing.JFrame {
                 regMouseClicked(evt);
             }
         });
-        Login_Panel.add(reg, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 560, 150, -1));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/image1.png"))); // NOI18N
-        Login_Panel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 220, -1, -1));
+        Login_Panel.add(reg, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, 150, 20));
 
         welcome.setFont(new java.awt.Font("Arial Black", 1, 35)); // NOI18N
         welcome.setForeground(new java.awt.Color(0, 102, 102));
         welcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         welcome.setText("WELCOME!");
-        Login_Panel.add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 410, 60));
+        Login_Panel.add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 240, -1));
 
-        Background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nim1.png"))); // NOI18N
-        Login_Panel.add(Background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setBackground(new java.awt.Color(255, 102, 102));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/image1.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, -1));
+
+        Login_Panel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 80, 370, 340));
+
+        jPanel2.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Ttile.setFont(new java.awt.Font("Arial Black", 1, 23)); // NOI18N
+        Ttile.setForeground(new java.awt.Color(0, 102, 102));
+        Ttile.setText("MEDICINE BILLING SYSTEM");
+        jPanel2.add(Ttile, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, -1, 60));
+
+        Login_Panel.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Login_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Login_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Login_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Login_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -174,9 +207,9 @@ public class LOGIN extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_pfieldActionPerformed
 
-    private void ufeldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ufeldActionPerformed
+    private void ufieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ufieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ufeldActionPerformed
+    }//GEN-LAST:event_ufieldActionPerformed
 
     private void regMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_regMouseClicked
         Registers reg = new Registers();
@@ -184,6 +217,105 @@ public class LOGIN extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_regMouseClicked
+
+    private void logMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logMouseClicked
+        String acc = role.getSelectedItem().toString();
+        String username = ufield.getText().trim();
+        String password = new String(pfield.getPassword()).trim();
+
+      
+        // Check for empty fields
+        if (username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty()) {
+                ufield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            }
+            if (password.isEmpty()) {
+                pfield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            }
+
+            JOptionPane.showMessageDialog(null, "Username and password cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return; // Exit early
+        }
+
+        
+        // Proceed if validation passes
+        connectDB con = new connectDB();
+        Connection cn = con.getConnection(); // Get database connection
+
+        String sql = "SELECT u_password, u_role FROM user WHERE u_username = ?";
+
+        try {
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setString(1, username); // Set username parameter
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) { // If user exists
+                String storedPassword = rs.getString("u_password");
+                String roleFromDB = rs.getString("u_role");
+
+                // **Check if password matches**
+                if (storedPassword.equals(password)) {  
+
+                    // **Check if role matches the selected role**
+                    if (roleFromDB.equalsIgnoreCase(acc)) {  
+                        JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                        // **Role-based redirection**
+                        if ("Admin".equalsIgnoreCase(roleFromDB)) {
+                            Admin_Dashboard admin = new Admin_Dashboard();
+                            admin.setVisible(true);
+                            this.dispose();
+                        } else if ("Staff".equalsIgnoreCase(roleFromDB)) {
+                            Staff_Dashboard staff = new Staff_Dashboard();
+                            staff.setVisible(true);
+                            this.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Invalid role!", "Login Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Incorrect role selection!", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Username not found.", "Login Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // Close resources
+            rs.close();
+            pst.close();
+            cn.close();
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_logMouseClicked
+
+    private void logMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logMouseEntered
+        log.setBackground(defaultColor);
+    }//GEN-LAST:event_logMouseEntered
+
+    private void logMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logMouseExited
+        log.setOpaque(true); // Ensure background change is visible
+        log.setBackground(hoverColor);        
+    }//GEN-LAST:event_logMouseExited
+
+    private void exMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_exMouseClicked
+
+    private void exMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exMouseEntered
+        ex.setBackground(defaultColor);
+    }//GEN-LAST:event_exMouseEntered
+
+    private void exMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exMouseExited
+        ex.setOpaque(true); // Ensure background change is visible
+        ex.setBackground(hoverColor);   
+    }//GEN-LAST:event_exMouseExited
 
     /**
      * @param args the command line arguments
@@ -221,12 +353,13 @@ public class LOGIN extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Background;
     private javax.swing.JPanel Login_Panel;
     private javax.swing.JLabel Ttile;
     private javax.swing.JLabel ex;
     private javax.swing.JPanel exit;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel log;
     private javax.swing.JPanel login;
     private javax.swing.JLabel new_user;
@@ -234,7 +367,7 @@ public class LOGIN extends javax.swing.JFrame {
     private javax.swing.JPasswordField pfield;
     private javax.swing.JLabel reg;
     private javax.swing.JComboBox<String> role;
-    private javax.swing.JTextField ufeld;
+    private javax.swing.JTextField ufield;
     private javax.swing.JLabel user;
     private javax.swing.JLabel welcome;
     // End of variables declaration//GEN-END:variables
