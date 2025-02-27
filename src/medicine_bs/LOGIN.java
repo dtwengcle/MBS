@@ -242,7 +242,7 @@ public class LOGIN extends javax.swing.JFrame {
         connectDB con = new connectDB();
         Connection cn = con.getConnection(); // Get database connection
 
-        String sql = "SELECT u_password, u_role FROM user WHERE u_username = ?";
+        String sql = "SELECT password, role FROM users WHERE username = ?";
 
         try {
             PreparedStatement pst = cn.prepareStatement(sql);
@@ -250,8 +250,8 @@ public class LOGIN extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) { // If user exists
-                String storedPassword = rs.getString("u_password");
-                String roleFromDB = rs.getString("u_role");
+                String storedPassword = rs.getString("password");
+                String roleFromDB = rs.getString("role");
 
                 // **Check if password matches**
                 if (storedPassword.equals(password)) {  

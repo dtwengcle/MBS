@@ -44,7 +44,7 @@ public class Registers extends javax.swing.JFrame {
         username1 = new javax.swing.JLabel();
         passField = new javax.swing.JTextField();
         pass = new javax.swing.JLabel();
-        textield3 = new javax.swing.JTextField();
+        passField2 = new javax.swing.JTextField();
         conpass = new javax.swing.JLabel();
         emailField = new javax.swing.JTextField();
         email = new javax.swing.JLabel();
@@ -97,12 +97,12 @@ public class Registers extends javax.swing.JFrame {
         pass.setText("Password");
         Login_Panel.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, 230, -1));
 
-        textield3.addActionListener(new java.awt.event.ActionListener() {
+        passField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textield3ActionPerformed(evt);
+                passField2ActionPerformed(evt);
             }
         });
-        Login_Panel.add(textield3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 230, 40));
+        Login_Panel.add(passField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 230, 40));
 
         conpass.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
         conpass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -213,9 +213,9 @@ public class Registers extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_passFieldActionPerformed
 
-    private void textield3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textield3ActionPerformed
+    private void passField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passField2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textield3ActionPerformed
+    }//GEN-LAST:event_passField2ActionPerformed
 
     private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
         // TODO add your handling code here:
@@ -223,16 +223,23 @@ public class Registers extends javax.swing.JFrame {
 
     private void registerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMouseClicked
         
-                // Get user input and trim spaces
+                // Get users input and trim spaces
         String u_name = nameField.getText().trim();
         String usern = usernameField.getText().trim();
         String genderSelected = (genderField.getSelectedItem() != null) ? genderField.getSelectedItem().toString() : "";
+        String roleSelected = (role.getSelectedItem() != null) ? role.getSelectedItem().toString() : "";
         String email = emailField.getText().trim();
-        String pass = passField.getText().trim(); // TODO: Hash password before saving
+        String pass1 = passField.getText().trim(); // TODO: Hash password before saving
+        String pass2 = passField2.getText().trim();
 
         // Validate inputs
-        if (u_name.isEmpty() || usern.isEmpty() || genderSelected.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+        if (u_name.isEmpty() || usern.isEmpty() || genderSelected.isEmpty() || email.isEmpty() || pass1.isEmpty() || pass2.isEmpty()) {
             JOptionPane.showMessageDialog(null, "All fields are required!", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if(!pass1.equals(pass2)){
+            JOptionPane.showMessageDialog(null, "Passwords DO NOT Match!", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -247,7 +254,7 @@ public class Registers extends javax.swing.JFrame {
 
         try {
             // **Check if email already exists**
-            String checkEmailSql = "SELECT COUNT(*) FROM user WHERE u_email = ?";
+            String checkEmailSql = "SELECT COUNT(*) FROM users WHERE email = ?";
             try (PreparedStatement emailPst = cn.prepareStatement(checkEmailSql)) {
                 emailPst.setString(1, email);
                 try (ResultSet rsEmail = emailPst.executeQuery()) {
@@ -259,7 +266,7 @@ public class Registers extends javax.swing.JFrame {
             }
 
             // **Check if username already exists**
-            String checkUsernameSql = "SELECT COUNT(*) FROM user WHERE u_username = ?";
+            String checkUsernameSql = "SELECT COUNT(*) FROM users WHERE username = ?";
             try (PreparedStatement usernamePst = cn.prepareStatement(checkUsernameSql)) {
                 usernamePst.setString(1, usern);
                 try (ResultSet rsUsername = usernamePst.executeQuery()) {
@@ -270,15 +277,16 @@ public class Registers extends javax.swing.JFrame {
                 }
             }
 
-            // **Insert user data into the database**
-            String insertSql = "INSERT INTO user (u_fname, u_username, u_email, u_password, u_gender) VALUES (?, ?, ?, ?, ?)";
+            // **Insert users data into the database**
+            String insertSql = "INSERT INTO users (name, username, email, password, gender, role) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pst = cn.prepareStatement(insertSql)) {
                 pst.setString(1, u_name);
                 pst.setString(2, usern);
                 pst.setString(3, email);
-                pst.setString(4, pass); // TODO: Hash password before saving
+                pst.setString(4, pass1); // TODO: Hash password before saving
                 pst.setString(5, genderSelected);
+                pst.setString(6, roleSelected);
 
                 int result = pst.executeUpdate();
                 if (result == 1) {
@@ -365,10 +373,10 @@ public class Registers extends javax.swing.JFrame {
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel pass;
     private javax.swing.JTextField passField;
+    private javax.swing.JTextField passField2;
     private javax.swing.JLabel reg;
     private javax.swing.JButton registerButton;
     private javax.swing.JComboBox<String> role;
-    private javax.swing.JTextField textield3;
     private javax.swing.JLabel username1;
     private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
