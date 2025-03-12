@@ -199,6 +199,7 @@ public class Registers extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
@@ -278,7 +279,7 @@ public class Registers extends javax.swing.JFrame {
             }
 
             // **Insert users data into the database**
-            String insertSql = "INSERT INTO users (name, username, email, password, gender, role) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertSql = "INSERT INTO users (name, username, email, password, gender, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pst = cn.prepareStatement(insertSql)) {
                 pst.setString(1, u_name);
@@ -287,6 +288,7 @@ public class Registers extends javax.swing.JFrame {
                 pst.setString(4, pass1); // TODO: Hash password before saving
                 pst.setString(5, genderSelected);
                 pst.setString(6, roleSelected);
+                pst.setString(7, (roleSelected.equals("Admin") ? "Active" : "Pending"));
 
                 int result = pst.executeUpdate();
                 if (result == 1) {

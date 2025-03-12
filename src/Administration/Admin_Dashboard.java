@@ -6,7 +6,7 @@
 package Administration;
 
 import dashboard.users;
-import medicine_bs.Dashboard;
+import medicine_bs.DashBoard;
 
 /**
  *
@@ -146,7 +146,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
-        Dashboard dsb = new Dashboard();
+        DashBoard dsb = new DashBoard();
         dsb.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jPanel3MouseClicked

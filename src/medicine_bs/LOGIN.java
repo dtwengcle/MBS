@@ -41,7 +41,6 @@ public class LOGIN extends javax.swing.JFrame {
         user = new javax.swing.JLabel();
         pfield = new javax.swing.JPasswordField();
         pass = new javax.swing.JLabel();
-        role = new javax.swing.JComboBox<>();
         exit = new javax.swing.JPanel();
         ex = new javax.swing.JLabel();
         login = new javax.swing.JPanel();
@@ -87,10 +86,6 @@ public class LOGIN extends javax.swing.JFrame {
         pass.setText("Password");
         Login_Panel.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 240, -1));
 
-        role.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
-        role.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Staff" }));
-        Login_Panel.add(role, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, 100, 40));
-
         ex.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         ex.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ex.setText("EXIT");
@@ -110,14 +105,18 @@ public class LOGIN extends javax.swing.JFrame {
         exit.setLayout(exitLayout);
         exitLayout.setHorizontalGroup(
             exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ex, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exitLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(ex, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         exitLayout.setVerticalGroup(
             exitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ex, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exitLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(ex, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        Login_Panel.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 70, 30));
+        Login_Panel.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 70, 30));
 
         log.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         log.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -138,14 +137,18 @@ public class LOGIN extends javax.swing.JFrame {
         login.setLayout(loginLayout);
         loginLayout.setHorizontalGroup(
             loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(log, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(log, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         loginLayout.setVerticalGroup(
             loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(log, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(log, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        Login_Panel.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 330, 70, 30));
+        Login_Panel.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 70, 30));
 
         new_user.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
         new_user.setForeground(new java.awt.Color(0, 102, 102));
@@ -220,10 +223,8 @@ public class LOGIN extends javax.swing.JFrame {
     }//GEN-LAST:event_regMouseClicked
 
     private void logMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logMouseClicked
-        String acc = role.getSelectedItem().toString();
         String username = ufield.getText().trim();
         String password = new String(pfield.getPassword()).trim();
-
       
         // Check for empty fields
         if (username.isEmpty() || password.isEmpty()) {
@@ -243,7 +244,7 @@ public class LOGIN extends javax.swing.JFrame {
         connectDB con = new connectDB();
         Connection cn = con.getConnection(); // Get database connection
 
-        String sql = "SELECT password, role FROM users WHERE username = ?";
+        String sql = "SELECT password, role, status FROM users WHERE username = ?";
 
         try {
             PreparedStatement pst = cn.prepareStatement(sql);
@@ -253,29 +254,28 @@ public class LOGIN extends javax.swing.JFrame {
             if (rs.next()) { // If user exists
                 String storedPassword = rs.getString("password");
                 String roleFromDB = rs.getString("role");
+                String status = rs.getString("status");
+                
+                
 
                 // **Check if password matches**
-                if (storedPassword.equals(password)) {  
-
-                    // **Check if role matches the selected role**
-                    if (roleFromDB.equalsIgnoreCase(acc)) {  
-                        JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                        // **Role-based redirection**
-                        if ("Admin".equalsIgnoreCase(roleFromDB)) {
-                            Admin_Dashboard admin = new Admin_Dashboard();
-                            admin.setVisible(true);
-                            this.dispose();
-                        } else if ("Staff".equalsIgnoreCase(roleFromDB)) {
-                            Staff_Dashboard staff = new Staff_Dashboard();
-                            staff.setVisible(true);
-                            this.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Invalid role!", "Login Error", JOptionPane.ERROR_MESSAGE);
-                        }
-
+                if (storedPassword.equals(password)) {
+                     if (!status.equals("Active")){
+                        JOptionPane.showMessageDialog(null, "Accoutn not yet approved!", "Pending Approval!", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                     
+                    // **Role-based redirection**
+                    if ("Admin".equalsIgnoreCase(roleFromDB)) {
+                        Admin_Dashboard admin = new Admin_Dashboard();
+                        admin.setVisible(true);
+                        this.dispose();
+                    } else if ("Staff".equalsIgnoreCase(roleFromDB)) {
+                        Staff_Dashboard staff = new Staff_Dashboard();
+                        staff.setVisible(true);
+                        this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Incorrect role selection!", "Login Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Invalid role!", "Login Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } else {
@@ -367,7 +367,6 @@ public class LOGIN extends javax.swing.JFrame {
     private javax.swing.JLabel pass;
     private javax.swing.JPasswordField pfield;
     private javax.swing.JLabel reg;
-    private javax.swing.JComboBox<String> role;
     private javax.swing.JTextField ufield;
     private javax.swing.JLabel user;
     private javax.swing.JLabel welcome;
