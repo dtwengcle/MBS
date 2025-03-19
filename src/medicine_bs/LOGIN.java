@@ -1,7 +1,6 @@
 
 package medicine_bs;
 
-import Administration.Admin_Dashboard;
 import Staff.Staff_Dashboard;
 import config.connectDB;
 import java.awt.Color;
@@ -267,7 +266,8 @@ public class LOGIN extends javax.swing.JFrame {
                      
                     // **Role-based redirection**
                     if ("Admin".equalsIgnoreCase(roleFromDB)) {
-                        Admin_Dashboard admin = new Admin_Dashboard();
+//                        Admin_Dashboard admin = new Admin_Dashboard();
+                        DashBoard admin = new DashBoard();
                         admin.setVisible(true);
                         this.dispose();
                     } else if ("Staff".equalsIgnoreCase(roleFromDB)) {

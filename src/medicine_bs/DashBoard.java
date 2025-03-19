@@ -94,7 +94,7 @@ public class DashBoard extends javax.swing.JFrame {
         Dashboard1.setText("Dashboard");
         jPanel2.add(Dashboard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 110, 20));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 420));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 550));
 
         maindesktop.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -102,14 +102,14 @@ public class DashBoard extends javax.swing.JFrame {
         maindesktop.setLayout(maindesktopLayout);
         maindesktopLayout.setHorizontalGroup(
             maindesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 650, Short.MAX_VALUE)
         );
         maindesktopLayout.setVerticalGroup(
             maindesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
 
-        getContentPane().add(maindesktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 560, 420));
+        getContentPane().add(maindesktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 650, 550));
 
         pack();
         setLocationRelativeTo(null);
