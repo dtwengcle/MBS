@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class connectDB {
-    private Connection connect;
+    private static Connection connect;
     
     public connectDB(){
         try {
@@ -45,6 +45,17 @@ public class connectDB {
 
     public PreparedStatement prepareStatement(String checkSql) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public static boolean updateDatabase(String sql) {
+        try {
+            PreparedStatement pstmt = connect.prepareStatement(sql);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Error in Updating: " + e.getMessage());
+            return false;
+        }
     }
         
 }
