@@ -4,6 +4,8 @@ package medicine_bs;
 import Staff.Staff_Dashboard;
 import config.connectDB;
 import java.awt.Color;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,20 @@ public class LOGIN extends javax.swing.JFrame {
   
     public LOGIN() {
         initComponents();
+    }
+    
+    public String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
     
         private Color hoverColor = new Color(180, 180, 180); // Grayish color on hover
@@ -242,7 +258,9 @@ public class LOGIN extends javax.swing.JFrame {
         // Proceed if validation passes
         connectDB con = new connectDB();
         Connection cn = con.getConnection(); // Get database connection
-
+        
+        password = hashPassword(password);
+        
         String sql = "SELECT password, role, status FROM users WHERE username = ?";
 
         try {

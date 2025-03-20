@@ -7,6 +7,8 @@ package medicine_bs;
 
 import config.connectDB;
 import java.awt.Color;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +29,20 @@ public class Registers extends javax.swing.JFrame {
      */
     public Registers() {
         initComponents();
+    }
+    
+    public String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
          private Color hoverColor = new Color(180, 180, 180); // Grayish color on hover
@@ -277,7 +293,9 @@ public class Registers extends javax.swing.JFrame {
                     }
                 }
             }
-
+            
+            pass1 = hashPassword(pass1);
+            
             // **Insert users data into the database**
             String insertSql = "INSERT INTO users (name, username, email, password, gender, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
