@@ -1,8 +1,10 @@
 
-package dashboard;
+package medicine_bs;
 
 import Admin_internalframe.Add_user;
 import config.connectDB;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,16 +60,19 @@ public class users extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         users = new javax.swing.JTable();
         addUser = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        add = new javax.swing.JLabel();
         EditUser = new javax.swing.JPanel();
-        edit = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         deleteUser = new javax.swing.JPanel();
+        refresh = new javax.swing.JPanel();
+        search_bar = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        refresh1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         delete = new javax.swing.JLabel();
-        refresh = new javax.swing.JPanel();
-        refresh1 = new javax.swing.JLabel();
+        edit = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        add = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         user_tbl.setBackground(new java.awt.Color(255, 153, 153));
         user_tbl.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -87,7 +92,7 @@ public class users extends javax.swing.JInternalFrame {
 
         jScrollPane2.setViewportView(jScrollPane1);
 
-        user_tbl.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 610, 430));
+        user_tbl.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 610, 270));
 
         addUser.setBackground(new java.awt.Color(255, 153, 153));
         addUser.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -96,27 +101,11 @@ public class users extends javax.swing.JInternalFrame {
             }
         });
         addUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-users.png"))); // NOI18N
-        addUser.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 30, 30));
-
-        add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        add.setText("Add user");
-        addUser.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, 30));
-
-        user_tbl.add(addUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, 110, 30));
+        user_tbl.add(addUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, 110, 30));
 
         EditUser.setBackground(new java.awt.Color(255, 153, 153));
         EditUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        edit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        edit.setText("Edit user");
-        EditUser.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, 30));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user-edit.png"))); // NOI18N
-        EditUser.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 30, 30));
-
-        user_tbl.add(EditUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 450, 110, 30));
+        user_tbl.add(EditUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 490, 110, 30));
 
         deleteUser.setBackground(new java.awt.Color(255, 153, 153));
         deleteUser.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -125,15 +114,7 @@ public class users extends javax.swing.JInternalFrame {
             }
         });
         deleteUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete-user.png"))); // NOI18N
-        deleteUser.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 30, 30));
-
-        delete.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        delete.setText("Delete user");
-        deleteUser.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, 30));
-
-        user_tbl.add(deleteUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 450, 110, 30));
+        user_tbl.add(deleteUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 490, 110, 30));
 
         refresh.setBackground(new java.awt.Color(255, 153, 153));
         refresh.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -142,23 +123,82 @@ public class users extends javax.swing.JInternalFrame {
             }
         });
         refresh.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        user_tbl.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 490, 110, 30));
+
+        search_bar.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        search_bar.setForeground(new java.awt.Color(153, 153, 153));
+        search_bar.setText(" search...");
+        search_bar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        search_bar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                search_barFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                search_barFocusLost(evt);
+            }
+        });
+        search_bar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_barActionPerformed(evt);
+            }
+        });
+        search_bar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_barKeyReleased(evt);
+            }
+        });
+        user_tbl.add(search_bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 170, 25));
+
+        jPanel2.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setText("jLabel4");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 30, -1));
+
+        user_tbl.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 25, 25));
 
         refresh1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         refresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
         refresh1.setText("Refresh");
-        refresh.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 80, 30));
+        refresh1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, 80, 30));
 
-        user_tbl.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 450, 110, 30));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete-user.png"))); // NOI18N
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 30, 30));
+
+        delete.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        delete.setText("Delete user");
+        delete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, 30));
+
+        edit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        edit.setText("Edit user");
+        edit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, 30));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user-edit.png"))); // NOI18N
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 350, 30, 30));
+
+        add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        add.setText("Add user");
+        add.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, -1, 30));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-users.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        user_tbl.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 30, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+            .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -195,6 +235,30 @@ public class users extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_deleteUserMouseClicked
 
+    private void search_barFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusGained
+        if (search_bar.getText().equals(" search...")) {
+            search_bar.setText("");
+            search_bar.setFont(new Font("Arial", Font.PLAIN, 11));
+            search_bar.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_search_barFocusGained
+
+    private void search_barFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusLost
+        if (search_bar.getText().isEmpty()) {
+            search_bar.setText(" search...");
+            search_bar.setFont(new Font("Arial", Font.PLAIN, 11));
+            search_bar.setForeground(Color.GRAY);
+        }
+    }//GEN-LAST:event_search_barFocusLost
+
+    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_barActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_barActionPerformed
+
+    private void search_barKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_barKeyReleased
+        
+    }//GEN-LAST:event_search_barKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel EditUser;
@@ -205,12 +269,15 @@ public class users extends javax.swing.JInternalFrame {
     private javax.swing.JLabel edit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private java.awt.ScrollPane scrollPane1;
+    private javax.swing.JTextField search_bar;
     private javax.swing.JPanel user_tbl;
     private javax.swing.JTable users;
     // End of variables declaration//GEN-END:variables

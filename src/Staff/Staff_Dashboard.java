@@ -5,6 +5,8 @@
  */
 package Staff;
 
+import medicine_bs.LOGIN;
+
 /**
  *
  * @author mikel
@@ -16,6 +18,7 @@ public class Staff_Dashboard extends javax.swing.JFrame {
      */
     public Staff_Dashboard() {
         initComponents();
+        
     }
 
     /**
@@ -27,21 +30,140 @@ public class Staff_Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        logo = new javax.swing.JLabel();
+        Dashboard = new javax.swing.JLabel();
+        userpanel1 = new javax.swing.JPanel();
+        users1 = new javax.swing.JLabel();
+        Dashboard1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        userpanel2 = new javax.swing.JPanel();
+        users2 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        staffmaind = new javax.swing.JDesktopPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/im1.png"))); // NOI18N
+        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, 70));
+
+        Dashboard.setBackground(new java.awt.Color(0, 102, 102));
+        Dashboard.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        Dashboard.setForeground(new java.awt.Color(0, 102, 102));
+        Dashboard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Dashboard.setText("Staff");
+        jPanel2.add(Dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, -1, 22));
+
+        userpanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userpanel1MouseClicked(evt);
+            }
+        });
+        userpanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        users1.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
+        users1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        users1.setText("Home");
+        userpanel1.add(users1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 30));
+
+        jPanel2.add(userpanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 100, 30));
+
+        Dashboard1.setBackground(new java.awt.Color(0, 102, 102));
+        Dashboard1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        Dashboard1.setForeground(new java.awt.Color(0, 102, 102));
+        Dashboard1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Dashboard1.setText("Dashboard");
+        jPanel2.add(Dashboard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 110, 20));
+
+        jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout.png"))); // NOI18N
+        jLabel1.setText("Logout");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 510, -1, -1));
+
+        userpanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        userpanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userpanel2MouseClicked(evt);
+            }
+        });
+        userpanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        users2.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
+        users2.setText("users");
+        users2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                users2MouseClicked(evt);
+            }
+        });
+        userpanel2.add(users2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 30));
+
+        jPanel2.add(userpanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 100, 30));
+
+        jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout.png"))); // NOI18N
+        jLabel2.setText("Logout");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 550));
+
+        javax.swing.GroupLayout staffmaindLayout = new javax.swing.GroupLayout(staffmaind);
+        staffmaind.setLayout(staffmaindLayout);
+        staffmaindLayout.setHorizontalGroup(
+            staffmaindLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 650, Short.MAX_VALUE)
+        );
+        staffmaindLayout.setVerticalGroup(
+            staffmaindLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 550, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(staffmaind, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 650, 550));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(849, 549));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void userpanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userpanel1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userpanel1MouseClicked
+
+    private void users2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_users2MouseClicked
+        
+    }//GEN-LAST:event_users2MouseClicked
+
+    private void userpanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userpanel2MouseClicked
+        staffuserforms suf = new staffuserforms();
+        staffmaind.add(suf).setVisible(true);
+    }//GEN-LAST:event_userpanel2MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        LOGIN lg = new LOGIN();
+        lg.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -79,5 +201,17 @@ public class Staff_Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Dashboard;
+    private javax.swing.JLabel Dashboard1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel logo;
+    private javax.swing.JDesktopPane staffmaind;
+    private javax.swing.JPanel userpanel1;
+    private javax.swing.JPanel userpanel2;
+    private javax.swing.JLabel users1;
+    private javax.swing.JLabel users2;
     // End of variables declaration//GEN-END:variables
 }
