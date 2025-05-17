@@ -5,6 +5,8 @@
  */
 package medicine_bs;
 
+import javax.swing.JDesktopPane;
+
 
 /**
  *
@@ -12,11 +14,23 @@ package medicine_bs;
  */
 public class DashBoard extends javax.swing.JFrame {
 
+    private static DashBoard instance;
+    
     /**
      * Creates new form DashBoard
      */
     public DashBoard() {
         initComponents();
+        
+        instance = this;
+    }
+    
+    public static DashBoard getInstance() {
+        return instance;
+    }
+    
+    public JDesktopPane getMainDesktop() {
+        return maindesktop;
     }
 
     /**
@@ -46,7 +60,6 @@ public class DashBoard extends javax.swing.JFrame {
         maindesktop = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(666, 570));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
@@ -117,7 +130,7 @@ public class DashBoard extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -125,7 +138,7 @@ public class DashBoard extends javax.swing.JFrame {
             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, 30));
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 100, 30));
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout.png"))); // NOI18N
@@ -142,7 +155,7 @@ public class DashBoard extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Quantity");
+        jLabel3.setText("Inventory");
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -151,15 +164,15 @@ public class DashBoard extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, 30));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 100, 30));
 
         jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -174,7 +187,7 @@ public class DashBoard extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                 .addGap(21, 21, 21))
         );
         jPanel4Layout.setVerticalGroup(
@@ -182,7 +195,7 @@ public class DashBoard extends javax.swing.JFrame {
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, -1, -1));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 100, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 550));
 
@@ -192,14 +205,14 @@ public class DashBoard extends javax.swing.JFrame {
         maindesktop.setLayout(maindesktopLayout);
         maindesktopLayout.setHorizontalGroup(
             maindesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
         maindesktopLayout.setVerticalGroup(
             maindesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 550, Short.MAX_VALUE)
         );
 
-        getContentPane().add(maindesktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 520, 550));
+        getContentPane().add(maindesktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 640, 550));
 
         pack();
         setLocationRelativeTo(null);

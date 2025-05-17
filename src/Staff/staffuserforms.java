@@ -48,17 +48,51 @@ public class staffuserforms extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         user_tbl = new javax.swing.JPanel();
+        addUsers = new javax.swing.JPanel();
+        add = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        refresh = new javax.swing.JPanel();
+        refresh1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         staffusers = new javax.swing.JTable();
-        addUsers = new javax.swing.JPanel();
-        refresh = new javax.swing.JPanel();
-        add = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        refresh1 = new javax.swing.JLabel();
 
         user_tbl.setBackground(new java.awt.Color(255, 153, 153));
+        user_tbl.setMinimumSize(new java.awt.Dimension(630, 510));
+        user_tbl.setPreferredSize(new java.awt.Dimension(630, 510));
         user_tbl.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addUsers.setBackground(new java.awt.Color(255, 153, 153));
+        addUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addUsersMouseClicked(evt);
+            }
+        });
+        addUsers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        add.setText("Add user");
+        addUsers.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, 30));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-users.png"))); // NOI18N
+        addUsers.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 30, 30));
+
+        user_tbl.add(addUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, 110, 30));
+
+        refresh.setBackground(new java.awt.Color(255, 153, 153));
+        refresh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refreshMouseClicked(evt);
+            }
+        });
+        refresh.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        refresh1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        refresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
+        refresh1.setText("Refresh");
+        refresh.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, 30));
+
+        user_tbl.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 450, 110, 30));
 
         staffusers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,47 +109,21 @@ public class staffuserforms extends javax.swing.JInternalFrame {
 
         jScrollPane2.setViewportView(jScrollPane1);
 
-        user_tbl.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 510, 430));
-
-        addUsers.setBackground(new java.awt.Color(255, 153, 153));
-        addUsers.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addUsersMouseClicked(evt);
-            }
-        });
-        addUsers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        user_tbl.add(addUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, 110, 30));
-
-        refresh.setBackground(new java.awt.Color(255, 153, 153));
-        refresh.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                refreshMouseClicked(evt);
-            }
-        });
-        refresh.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        user_tbl.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 450, 110, 30));
-
-        add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        add.setText("Add user");
-        user_tbl.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 500, -1, 30));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-users.png"))); // NOI18N
-        user_tbl.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, 30, 30));
-
-        refresh1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        refresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
-        refresh1.setText("Refresh");
-        user_tbl.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 500, 80, 30));
+        user_tbl.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 510, 430));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 79, Short.MAX_VALUE))
         );
 
         pack();

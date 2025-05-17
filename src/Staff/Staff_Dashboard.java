@@ -122,14 +122,14 @@ public class Staff_Dashboard extends javax.swing.JFrame {
         staffmaind.setLayout(staffmaindLayout);
         staffmaindLayout.setHorizontalGroup(
             staffmaindLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 650, Short.MAX_VALUE)
+            .addGap(0, 630, Short.MAX_VALUE)
         );
         staffmaindLayout.setVerticalGroup(
             staffmaindLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
-        jPanel1.add(staffmaind, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 650, 550));
+        jPanel1.add(staffmaind, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 630, 510));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

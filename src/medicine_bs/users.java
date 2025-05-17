@@ -1,6 +1,6 @@
-
 package medicine_bs;
 
+import Admin_internalframe.Edit_user;
 import Admin_internalframe.Add_user;
 import config.connectDB;
 import java.awt.Color;
@@ -13,8 +13,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 import net.proteanit.sql.DbUtils;
 
 public class users extends javax.swing.JInternalFrame {
-    
-    private static Add_user addUserFrame = null;
     
     public users() {
         initComponents();
@@ -29,7 +27,7 @@ public class users extends javax.swing.JInternalFrame {
     public final void displayData(){
         try{
             connectDB dbc = new connectDB();
-            try (ResultSet rs = dbc.getData("SELECT * FROM users")) {
+            try (ResultSet rs = dbc.getData("SELECT name, username, email, role, status FROM users")) {
                 users.setModel(DbUtils.resultSetToTableModel(rs));
             }
         }catch(SQLException ex){
@@ -38,17 +36,9 @@ public class users extends javax.swing.JInternalFrame {
         }
     }
     
-    private void openAddUserFrame() {
-        if (addUserFrame == null || !addUserFrame.isDisplayable()) {
-            addUserFrame = new Add_user(); // Create a new instance if null or closed
-            addUserFrame.setVisible(true);
-        } else {
-            if (addUserFrame.getState() == Frame.ICONIFIED) {
-                addUserFrame.setState(Frame.NORMAL); // Restore if minimized
-            }
-            addUserFrame.toFront(); // Bring to front
-        }
-    }
+//    private void openAddUserFrame() {
+//        
+//    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -161,6 +151,11 @@ public class users extends javax.swing.JInternalFrame {
         refresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
         refresh1.setText("Refresh");
         refresh1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        refresh1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refresh1MouseClicked(evt);
+            }
+        });
         user_tbl.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, 80, 30));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete-user.png"))); // NOI18N
@@ -170,11 +165,21 @@ public class users extends javax.swing.JInternalFrame {
         delete.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         delete.setText("Delete user");
         delete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteMouseClicked(evt);
+            }
+        });
         user_tbl.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, 30));
 
         edit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         edit.setText("Edit user");
         edit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        edit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editMouseClicked(evt);
+            }
+        });
         user_tbl.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, -1, 30));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user-edit.png"))); // NOI18N
@@ -184,6 +189,11 @@ public class users extends javax.swing.JInternalFrame {
         add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         add.setText("Add user");
         add.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        add.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addMouseClicked(evt);
+            }
+        });
         user_tbl.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, -1, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-users.png"))); // NOI18N
@@ -194,45 +204,32 @@ public class users extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(user_tbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(104, 104, 104))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void addUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addUserMouseClicked
-        openAddUserFrame();
+
+//        new Add_user().setVisible(true);
     }//GEN-LAST:event_addUserMouseClicked
 
     private void refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseClicked
-        displayData();
+        
     }//GEN-LAST:event_refreshMouseClicked
 
     private void deleteUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteUserMouseClicked
-        int row = users.getSelectedRow(); 
-
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        String id = users.getValueAt(row, 0).toString(); 
-
-        if (connectDB.updateDatabase("DELETE FROM users WHERE id = '" + id + "'")) {
-            displayData();
-            JOptionPane.showMessageDialog(this, "User deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to delete user.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        
     }//GEN-LAST:event_deleteUserMouseClicked
 
     private void search_barFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusGained
@@ -258,6 +255,71 @@ public class users extends javax.swing.JInternalFrame {
     private void search_barKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_barKeyReleased
         
     }//GEN-LAST:event_search_barKeyReleased
+
+    private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
+//         TODO add your handling code here:
+                Add_user addUserFrame = Add_user.getInstance();
+        
+        if (addUserFrame == null || !addUserFrame.isDisplayable()) {
+            addUserFrame = new Add_user(); // Create a new instance if null or closed
+            addUserFrame.setVisible(true);
+        } else {
+            if (addUserFrame.getState() == Frame.ICONIFIED) {
+                addUserFrame.setState(Frame.NORMAL); // Restore if minimized
+            }
+            addUserFrame.toFront(); // Bring to front
+        }
+    }//GEN-LAST:event_addMouseClicked
+
+    private void editMouseClicked(java.awt.event.MouseEvent evt) {
+        int row = users.getSelectedRow();
+        
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a user to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Get the selected user's data
+        String name = users.getValueAt(row, 0).toString();
+        String username = users.getValueAt(row, 1).toString();
+        String email = users.getValueAt(row, 2).toString();
+        String role = users.getValueAt(row, 3).toString();
+        String status = users.getValueAt(row, 4).toString();
+        
+        // Create and show the edit user dialog
+        Edit_user editUserFrame = new Edit_user();
+        editUserFrame.setUserData(name, username, email, role, status);
+        editUserFrame.setVisible(true);
+    }
+
+    private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
+        // TODO add your handling code here:
+        int row = users.getSelectedRow(); 
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        String username = users.getValueAt(row, 1).toString(); 
+
+        if (connectDB.executeQuery("DELETE FROM users WHERE username = '" + username + "'")) {
+            displayData();
+            JOptionPane.showMessageDialog(this, "User deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete user.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteMouseClicked
+
+    private void refresh1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refresh1MouseClicked
+        // TODO add your handling code here:
+        displayData();
+    }//GEN-LAST:event_refresh1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

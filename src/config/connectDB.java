@@ -47,13 +47,16 @@ public class connectDB {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public static boolean updateDatabase(String sql) {
-        try {
-            PreparedStatement pstmt = connect.prepareStatement(sql);
+    public static boolean executeQuery(String query, Object... values) {
+        try (PreparedStatement pstmt = connect.prepareStatement(query)) {
+            for (int i = 0; i < values.length; i++) {
+                pstmt.setObject(i + 1, values[i]); // Set values dynamically
+            }
             int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+            return rowsAffected > 0; // Returns true if the execution was successful
         } catch (SQLException e) {
-            System.out.println("Error in Updating: " + e.getMessage());
+            System.out.println("Execution failed: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
