@@ -1,6 +1,6 @@
-
 package medicine_bs;
 
+import config.Session;
 import Staff.Staff_Dashboard;
 import config.connectDB;
 import java.awt.Color;
@@ -238,22 +238,28 @@ public class LOGIN extends javax.swing.JFrame {
     }//GEN-LAST:event_regMouseClicked
 
     private void logMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logMouseClicked
+        Session session = new Session();
+        
         String username = ufield.getText().trim();
         String password = new String(pfield.getPassword()).trim();
       
-        // Check for empty fields
-        if (username.isEmpty() || password.isEmpty()) {
-            if (username.isEmpty()) {
-                ufield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-            }
-            if (password.isEmpty()) {
-                pfield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-            }
-
-            JOptionPane.showMessageDialog(null, "Username and password cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
-            return; // Exit early
+        // Validate username format
+        if (username.isEmpty()) {
+            ufield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Username cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-
+        
+        // Validate password
+        if (password.isEmpty()) {
+            pfield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Password cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Reset borders if validation passes
+        ufield.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        pfield.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         
         // Proceed if validation passes
         connectDB con = new connectDB();
@@ -261,7 +267,7 @@ public class LOGIN extends javax.swing.JFrame {
         
         password = hashPassword(password);
         
-        String sql = "SELECT password, role, status FROM users WHERE username = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
 
         try {
             PreparedStatement pst = cn.prepareStatement(sql);
@@ -269,18 +275,24 @@ public class LOGIN extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) { // If user exists
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String uname = rs.getString("username");
+                String gender = rs.getString("gender");
+                String email = rs.getString("email");
                 String storedPassword = rs.getString("password");
                 String roleFromDB = rs.getString("role");
                 String status = rs.getString("status");
                 
-                
-
                 // **Check if password matches**
                 if (storedPassword.equals(password)) {
                      if (!status.equals("Active")){
                         JOptionPane.showMessageDialog(null, "Accoutn not yet approved!", "Pending Approval!", JOptionPane.WARNING_MESSAGE);
                         return;
                     }
+                     
+                     // Insert Session
+                     session.setSession(id, name, username, gender, roleFromDB, email, status);
                      
                     // **Role-based redirection**
                     if ("Admin".equalsIgnoreCase(roleFromDB)) {

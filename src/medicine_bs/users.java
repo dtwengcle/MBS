@@ -240,21 +240,47 @@ public class users extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_search_barFocusGained
 
-    private void search_barFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusLost
+    private void search_barFocusLost(java.awt.event.FocusEvent evt) {
         if (search_bar.getText().isEmpty()) {
             search_bar.setText(" search...");
             search_bar.setFont(new Font("Arial", Font.PLAIN, 11));
             search_bar.setForeground(Color.GRAY);
+            displayData(); // Reload all data when search is cleared
         }
-    }//GEN-LAST:event_search_barFocusLost
+    }
 
-    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_barActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_barActionPerformed
+    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {
+        String searchText = search_bar.getText().trim();
+        if (!searchText.equals(" search...") && !searchText.isEmpty()) {
+            searchUsers(searchText);
+        }
+    }
 
-    private void search_barKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_barKeyReleased
-        
-    }//GEN-LAST:event_search_barKeyReleased
+    private void search_barKeyReleased(java.awt.event.KeyEvent evt) {
+        String searchText = search_bar.getText().trim();
+        if (!searchText.equals(" search...") && !searchText.isEmpty()) {
+            searchUsers(searchText);
+        }
+    }
+
+    private void searchUsers(String searchText) {
+        try {
+            connectDB dbc = new connectDB();
+            String sql = "SELECT name, username, email, role, status FROM users " +
+                        "WHERE name LIKE '"+searchText+"' OR username LIKE '"+searchText+"' OR email LIKE '"+searchText+"' OR role LIKE '"+searchText+"'";
+            
+            // Add wildcards for partial matching
+            String searchPattern = "%" + searchText + "%";
+            
+            try (ResultSet rs = dbc.getData(sql)) {
+                users.setModel(DbUtils.resultSetToTableModel(rs));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Search error: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error searching users: " + ex.getMessage(), 
+                                        "Search Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
 //         TODO add your handling code here:

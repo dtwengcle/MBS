@@ -5,6 +5,8 @@
  */
 package Admin_internalframe;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author mikel
@@ -16,6 +18,19 @@ public class Profile extends javax.swing.JFrame {
      */
     public Profile() {
         initComponents();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        loadProfileData();
+    }
+
+    private void loadProfileData() {
+        config.Session session = config.Session.getInstance();
+        if (session != null) {
+            nameField.setText(session.getName());
+            usernameField.setText(session.getUsername());
+            emailField.setText(session.getEmail());
+            genderField.setText(session.getGender());
+            roleField.setText(session.getRole());
+        }
     }
 
     /**
@@ -27,18 +42,82 @@ public class Profile extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        usernameField = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        nameField = new javax.swing.JLabel();
+        emailField = new javax.swing.JLabel();
+        roleField = new javax.swing.JLabel();
+        genderField = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(420, 420));
+
+        jPanel1.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel1.setPreferredSize(new java.awt.Dimension(393, 374));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel1.setText("Profile");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, -1));
+
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel2.setText("Role:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, -1, -1));
+
+        usernameField.setForeground(new java.awt.Color(51, 51, 51));
+        usernameField.setText("None");
+        jPanel1.add(usernameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 90, -1, 20));
+
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setText("Usename:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, -1, 20));
+
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setText("Email:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel6.setText("Gender");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, -1, 20));
+
+        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel7.setText("Name:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
+
+        nameField.setForeground(new java.awt.Color(51, 51, 51));
+        nameField.setText("None");
+        jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, -1, -1));
+
+        emailField.setForeground(new java.awt.Color(51, 51, 51));
+        emailField.setText("None");
+        jPanel1.add(emailField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, -1, -1));
+
+        roleField.setForeground(new java.awt.Color(51, 51, 51));
+        roleField.setText("None");
+        jPanel1.add(roleField, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, -1, -1));
+
+        genderField.setForeground(new java.awt.Color(51, 51, 51));
+        genderField.setText("None");
+        jPanel1.add(genderField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, -1, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -80,5 +159,17 @@ public class Profile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel emailField;
+    private javax.swing.JLabel genderField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel nameField;
+    private javax.swing.JLabel roleField;
+    private javax.swing.JLabel usernameField;
     // End of variables declaration//GEN-END:variables
 }

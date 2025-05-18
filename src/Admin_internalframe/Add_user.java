@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import medicine_bs.Registers;
+import javax.swing.BorderFactory;
+import java.awt.Color;
 
 /**
  *
@@ -201,13 +203,61 @@ public class Add_user extends javax.swing.JFrame {
         String genderSelected = (genderField.getSelectedItem() != null) ? genderField.getSelectedItem().toString() : "";
         String roleSelected = (role.getSelectedItem() != null) ? role.getSelectedItem().toString() : "";
         String email = emailField.getText().trim();
-        String pass1 = passField.getText().trim(); // TODO: Hash password before saving
+        String pass1 = passField.getText().trim();
 
-        // Validate inputs
-        if (u_name.isEmpty() || usern.isEmpty() || genderSelected.isEmpty() || email.isEmpty() || pass1.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "All fields are required!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        // Validate name
+        if (u_name.isEmpty()) {
+            nameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Name cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (!u_name.matches("^[a-zA-Z\\s]+$")) {
+            nameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Name should only contain letters and spaces.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate username
+        if (usern.isEmpty()) {
+            usernameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Username cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (usern.length() < 4) {
+            usernameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Username must be at least 4 characters long.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email
+        if (email.isEmpty()) {
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Email cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password
+        if (pass1.isEmpty()) {
+            passField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Password cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (pass1.length() < 6) {
+            passField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Password must be at least 6 characters long.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Reset all borders if validation passes
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        emailField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        passField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         // Database Connection
         connectDB con = new connectDB();

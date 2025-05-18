@@ -5,19 +5,66 @@
  */
 package medicine_bs;
 
+import config.connectDB;
+import order.AddOrder;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author admin
  */
 public class Orderform_admin extends javax.swing.JInternalFrame {
+    private connectDB db;
+    private DefaultTableModel tableModel;
 
     /**
      
      */
     public Orderform_admin() {
         initComponents();
+        db = new connectDB();
+        
+        // Setup table model
+        String[] columns = {"Order ID", "Customer Name", "Medicine", "Quantity", "Total Price", "Order Date"};
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make table read-only
+            }
+        };
+        users.setModel(tableModel);
+        
+        // Add click listeners
+        addorder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addorderMouseClicked(evt);
+            }
+        });
+        
+        deleteorder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteorderMouseClicked(evt);
+            }
+        });
+        
+        refresh1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                refresh1MouseClicked(evt);
+            }
+        });
+        
+        //remove border
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
+        BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
+        bi.setNorthPane(null);
+        
+        // Load initial data
+        loadOrderData();
     }
 
     /**
@@ -33,7 +80,6 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         users = new javax.swing.JTable();
-        editorder = new javax.swing.JLabel();
         deleteorder = new javax.swing.JLabel();
         addorder = new javax.swing.JLabel();
         refresh1 = new javax.swing.JLabel();
@@ -45,6 +91,7 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(849, 549));
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel1.setName(""); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         users.setModel(new javax.swing.table.DefaultTableModel(
@@ -62,35 +109,29 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
 
         jScrollPane2.setViewportView(jScrollPane1);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 800, 320));
-
-        editorder.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        editorder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        editorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user-edit.png"))); // NOI18N
-        editorder.setText("Edit Order");
-        jPanel1.add(editorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 110, -1));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 600, 320));
 
         deleteorder.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         deleteorder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         deleteorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user-edit.png"))); // NOI18N
         deleteorder.setText("Delete Order");
-        jPanel1.add(deleteorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 450, 120, -1));
+        jPanel1.add(deleteorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 450, 120, -1));
 
         addorder.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         addorder.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         addorder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user-edit.png"))); // NOI18N
         addorder.setText("Add Order");
-        jPanel1.add(addorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 450, 110, -1));
+        jPanel1.add(addorder, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, 110, -1));
 
         refresh1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         refresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
         refresh1.setText("Refresh");
         refresh1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 450, 80, 30));
+        jPanel1.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 80, 30));
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 24)); // NOI18N
         jLabel1.setText("ORDERS");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 100, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, -1));
 
         search_bar.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         search_bar.setForeground(new java.awt.Color(153, 153, 153));
@@ -128,7 +169,10 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(182, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,35 +182,186 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void search_barFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusGained
+    private void loadOrderData() {
+        try {
+            // Clear existing data
+            tableModel.setRowCount(0);
+            
+            // Get data from database
+//            String sql = "SELECT o.order_id, o.customer_name, m.name as medicine_name, " +
+//                        "o.quantity, o.total_price, o.order_date " +
+//                        "FROM orders o " +
+//                        "JOIN medicines m ON o.medicine_id = m.medicine_id " +
+//                        "JOIN order_items oi ON "
+//                        "ORDER BY o.order_date DESC";
+            String sql = "SELECT o.order_id, o.customer_name, m.name as medicine_name, oi.quantity, "
+                    + "oi.total_price, o.order_date "
+                    + "FROM order_items oi "
+                    + "INNER JOIN orders o ON oi.order_id = o.order_id "
+                    + "INNER JOIN medicines m ON oi.medicine_id = m.medicine_id "
+                    + "ORDER BY o.order_date DESC";
+            ResultSet rs = db.getData(sql);
+            
+            // Add data to table
+            while (rs.next()) {
+                Object[] row = {
+                    rs.getInt("order_id"),
+                    rs.getString("customer_name"),
+                    rs.getString("medicine_name"),
+                    rs.getInt("quantity"),
+                    String.format("%.2f", rs.getDouble("total_price")),
+                    rs.getTimestamp("order_date")
+                };
+                tableModel.addRow(row);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error loading data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void searchOrders(String searchText) {
+        try {
+            // Clear existing data
+            tableModel.setRowCount(0);
+            
+            // Search in database
+//            String sql = "SELECT o.order_id, o.customer_name, m.name as medicine_name, " +
+//                        "o.quantity, o.total_price, o.order_date " +
+//                        "FROM orders o " +
+//                        "JOIN medicines m ON o.medicine_id = m.medicine_id " +
+//                        "WHERE o.customer_name LIKE '"+searchText+"' OR m.name LIKE  '"+searchText+"'" +
+//                        "ORDER BY o.order_date DESC";
+            String sql = "SELECT o.order_id, o.customer_name, m.name as medicine_name, oi.quantity, "
+                                + "oi.total_price, o.order_date "
+                                + "FROM order_items oi "
+                                + "INNER JOIN orders o ON oi.order_id = o.order_id "
+                                + "INNER JOIN medicines m ON oi.medicine_id = m.medicine_id "
+                                + "WHERE o.customer_name LIKE '"+searchText+"' OR m.name LIKE  '"+searchText+"'"
+                                + "ORDER BY o.order_date DESC";
+            ResultSet rs = db.getData(sql);
+            
+            // Add matching data to table
+            while (rs.next()) {
+                String customerName = rs.getString("customer_name");
+                String medicineName = rs.getString("medicine_name");
+                
+                if (customerName.toLowerCase().contains(searchText.toLowerCase()) || 
+                    medicineName.toLowerCase().contains(searchText.toLowerCase())) {
+                    Object[] row = {
+                        rs.getInt("order_id"),
+                        customerName,
+                        medicineName,
+                        rs.getInt("quantity"),
+                        String.format("%.2f", rs.getDouble("total_price")),
+                        rs.getTimestamp("order_date")
+                    };
+                    tableModel.addRow(row);
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error searching data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void deleteSelectedOrder() {
+        int selectedRow = users.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an order to delete", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int orderId = (int) users.getValueAt(selectedRow, 0);
+        String customerName = (String) users.getValueAt(selectedRow, 1);
+        String medicineName = (String) users.getValueAt(selectedRow, 2);
+        int quantity = (int) users.getValueAt(selectedRow, 3);
+
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Are you sure you want to delete this order?\n" +
+            "Customer: " + customerName + "\n" +
+            "Medicine: " + medicineName + "\n" +
+            "Quantity: " + quantity, 
+            "Confirm Delete", 
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                // Start transaction
+                String deleteOrderSql = "DELETE FROM orders WHERE order_id = ?";
+                boolean deleteSuccess = db.executeQuery(deleteOrderSql, orderId);
+                
+                if (deleteSuccess) {
+                    // Update inventory quantity
+                    String updateStockSql = "UPDATE medicines SET quantity_in_stock = quantity_in_stock + ? " +
+                                          "WHERE medicine_id = (SELECT medicine_id FROM orders WHERE order_id = ?)";
+                    boolean updateSuccess = db.executeQuery(updateStockSql, quantity, orderId);
+                    
+                    if (updateSuccess) {
+                        JOptionPane.showMessageDialog(this, "Order deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        loadOrderData(); // Refresh table
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to update inventory", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to delete order", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error deleting order: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void search_barFocusGained(java.awt.event.FocusEvent evt) {
         if (search_bar.getText().equals(" search...")) {
             search_bar.setText("");
             search_bar.setFont(new Font("Arial", Font.PLAIN, 11));
-            
         }
-    }//GEN-LAST:event_search_barFocusGained
+    }
 
-    private void search_barFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusLost
+    private void search_barFocusLost(java.awt.event.FocusEvent evt) {
         if (search_bar.getText().isEmpty()) {
             search_bar.setText(" search...");
             search_bar.setFont(new Font("Arial", Font.PLAIN, 11));
-            
+            loadOrderData(); // Reload all data when search is cleared
         }
-    }//GEN-LAST:event_search_barFocusLost
+    }
 
-    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_barActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_barActionPerformed
+    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {
+        String searchText = search_bar.getText().trim();
+        if (!searchText.equals(" search...") && !searchText.isEmpty()) {
+            searchOrders(searchText);
+        }
+    }
 
-    private void search_barKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_barKeyReleased
+    private void search_barKeyReleased(java.awt.event.KeyEvent evt) {
+        String searchText = search_bar.getText().trim();
+        if (!searchText.equals(" search...") && !searchText.isEmpty()) {
+            searchOrders(searchText);
+        }
+    }
 
-    }//GEN-LAST:event_search_barKeyReleased
+    private void addorderMouseClicked(java.awt.event.MouseEvent evt) {
+        AddOrder addForm = new AddOrder();
+        addForm.setVisible(true);
+        // Wait for the form to close before refreshing
+        addForm.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                loadOrderData();
+            }
+        });
+    }
 
+    private void deleteorderMouseClicked(java.awt.event.MouseEvent evt) {
+        deleteSelectedOrder();
+    }
+
+    private void refresh1MouseClicked(java.awt.event.MouseEvent evt) {
+        loadOrderData();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addorder;
     private javax.swing.JLabel deleteorder;
-    private javax.swing.JLabel editorder;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

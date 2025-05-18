@@ -6,6 +6,8 @@
 package Admin_internalframe;
 
 import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
+import java.awt.Color;
 
 /**
  *
@@ -141,6 +143,11 @@ public class Edit_user extends javax.swing.JFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 140, 40));
 
         genderField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        genderField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genderFieldActionPerformed(evt);
+            }
+        });
         jPanel1.add(genderField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, 140, 40));
 
         jLabel5.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -180,19 +187,58 @@ public class Edit_user extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void genderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genderFieldActionPerformed
+
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
         // Get values from fields
-        String name = nameField.getText();
-        String username = usernameField.getText();
-        String email = emailField.getText();
+        String name = nameField.getText().trim();
+        String username = usernameField.getText().trim();
+        String email = emailField.getText().trim();
         String selectedRole = (String) role.getSelectedItem();
         String gender = (String) genderField.getSelectedItem();
 
-        // Validate fields
-        if (name.isEmpty() || username.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+        // Validate name
+        if (name.isEmpty()) {
+            nameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(this, "Name cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (!name.matches("^[a-zA-Z\\s]+$")) {
+            nameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(this, "Name should only contain letters and spaces.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate username
+        if (username.isEmpty()) {
+            usernameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(this, "Username cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (username.length() < 4) {
+            usernameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(this, "Username must be at least 4 characters long.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email
+        if (email.isEmpty()) {
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(this, "Email cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Reset all borders if validation passes
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        emailField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         try {
             // Update the user in the database

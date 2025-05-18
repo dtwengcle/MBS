@@ -5,6 +5,8 @@
  */
 package medicine_bs;
 
+import Admin_internalframe.Profile;
+import javafx.application.Platform;
 import javax.swing.JDesktopPane;
 
 
@@ -22,7 +24,11 @@ public class DashBoard extends javax.swing.JFrame {
     public DashBoard() {
         initComponents();
         
+        
         instance = this;
+        
+        Home h = new Home();
+        maindesktop.add(h).setVisible(true);
     }
     
     public static DashBoard getInstance() {
@@ -87,6 +93,11 @@ public class DashBoard extends javax.swing.JFrame {
         users1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         users1.setText("Home");
         users1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        users1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                users1MouseClicked(evt);
+            }
+        });
         userpanel1.add(users1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 30));
 
         jPanel2.add(userpanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 100, 30));
@@ -123,6 +134,11 @@ public class DashBoard extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Order");
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,6 +173,11 @@ public class DashBoard extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Inventory");
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -180,15 +201,17 @@ public class DashBoard extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Profile");
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,6 +259,29 @@ public class DashBoard extends javax.swing.JFrame {
         lg.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        maindesktop.add(new Inventoryform_admin()).setVisible(true);
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        Orderform_admin of = new Orderform_admin();
+        maindesktop.add(of).setVisible(true);
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+        Profile pf = new Profile();
+        pf.setVisible(true);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void users1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_users1MouseClicked
+        // TODO add your handling code here:
+        Home h = new Home();
+        maindesktop.add(h).setVisible(true);
+    }//GEN-LAST:event_users1MouseClicked
 
     /**
      * @param args the command line arguments

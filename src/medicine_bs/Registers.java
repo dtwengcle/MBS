@@ -5,8 +5,10 @@
  */
 package medicine_bs;
 
+import config.Session;
 import config.connectDB;
 import java.awt.Color;
+//import java.awt.BorderFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -15,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -239,26 +242,76 @@ public class Registers extends javax.swing.JFrame {
     }//GEN-LAST:event_emailFieldActionPerformed
 
     private void registerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerButtonMouseClicked
+        Session session = Session.getInstance();
         
-                // Get users input and trim spaces
+        // Get users input and trim spaces
         String u_name = nameField.getText().trim();
         String usern = usernameField.getText().trim();
         String genderSelected = (genderField.getSelectedItem() != null) ? genderField.getSelectedItem().toString() : "";
         String roleSelected = (role.getSelectedItem() != null) ? role.getSelectedItem().toString() : "";
         String email = emailField.getText().trim();
-        String pass1 = passField.getText().trim(); // TODO: Hash password before saving
+        String pass1 = passField.getText().trim();
         String pass2 = passField2.getText().trim();
 
-        // Validate inputs
-        if (u_name.isEmpty() || usern.isEmpty() || genderSelected.isEmpty() || email.isEmpty() || pass1.isEmpty() || pass2.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "All fields are required!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        // Validate name
+        if (u_name.isEmpty()) {
+            nameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Name cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if(!pass1.equals(pass2)){
-            JOptionPane.showMessageDialog(null, "Passwords DO NOT Match!", "Input Error", JOptionPane.ERROR_MESSAGE);
+        if (!u_name.matches("^[a-zA-Z\\s]+$")) {
+            nameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Name should only contain letters and spaces.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        // Validate username
+        if (usern.isEmpty()) {
+            usernameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Username cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (usern.length() < 4) {
+            usernameField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Username must be at least 4 characters long.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email
+        if (email.isEmpty()) {
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Email cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password
+        if (pass1.isEmpty()) {
+            passField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Password cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (pass1.length() < 6) {
+            passField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Password must be at least 6 characters long.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!pass1.equals(pass2)) {
+            passField2.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Passwords do not match!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Reset all borders if validation passes
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        emailField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        passField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        passField2.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         // Database Connection
         connectDB con = new connectDB();
@@ -311,6 +364,7 @@ public class Registers extends javax.swing.JFrame {
                 int result = pst.executeUpdate();
                 if (result == 1) {
                     JOptionPane.showMessageDialog(null, "Registered Successfully!");
+                    
                     new LOGIN().setVisible(true);
                     SwingUtilities.getWindowAncestor(nameField).dispose(); // Close the registration form
                 } else {
@@ -325,9 +379,7 @@ public class Registers extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Registers.class.getName()).log(Level.SEVERE, null, ex);
             }
-}
-
-
+        }
     }//GEN-LAST:event_registerButtonMouseClicked
 
     private void genderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderFieldActionPerformed
