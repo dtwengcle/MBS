@@ -70,23 +70,18 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             tableModel.setRowCount(0);
             
             // Search in database
-            String sql = "SELECT * FROM medicines WHERE name LIKE '"+searchText+"' OR description LIKE '"+searchText+"'";
+            String sql = "SELECT * FROM medicines WHERE name LIKE ? OR description LIKE '"+searchText+"'";
             ResultSet rs = db.getData(sql);
             
             // Add matching data to table
             while (rs.next()) {
-                String name = rs.getString("name");
-                String description = rs.getString("description");
-                
-                if (name.toLowerCase().contains(searchText.toLowerCase()) || 
-                    (description != null && description.toLowerCase().contains(searchText.toLowerCase()))) {
-                    Object[] row = {
-                        name,
-                        rs.getInt("quantity_in_stock"),
-                        rs.getDouble("price")
-                    };
-                    tableModel.addRow(row);
-                }
+                Object[] row = {
+                    rs.getInt("medicine_id"),
+                    rs.getString("name"),
+                    rs.getInt("quantity_in_stock"),
+                    rs.getDouble("price")
+                };
+                tableModel.addRow(row);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error searching data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -100,7 +95,9 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             return;
         }
 
-        String medicineName = String.valueOf(inventoryTable.getValueAt(selectedRow, 0));
+        int medicineId = (int) inventoryTable.getValueAt(selectedRow, 0);
+        String medicineName = (String) inventoryTable.getValueAt(selectedRow, 1);
+        
         int confirm = JOptionPane.showConfirmDialog(this, 
             "Are you sure you want to delete " + medicineName + "?", 
             "Confirm Delete", 
@@ -108,8 +105,8 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                String sql = "DELETE FROM medicines WHERE name = ?";
-                boolean success = db.executeQuery(sql, medicineName);
+                String sql = "DELETE FROM medicines WHERE medicine_id = ?";
+                boolean success = db.executeQuery(sql, medicineId);
                 
                 if (success) {
                     JOptionPane.showMessageDialog(this, "Medicine deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -331,26 +328,17 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             return;
         }
 
-        String medicineName = String.valueOf(inventoryTable.getValueAt(selectedRow, 0));
-        try {
-            String sql = "SELECT medicine_id FROM medicines WHERE name = '" + medicineName + "'";
-            ResultSet rs = db.getData(sql);
-            if (rs.next()) {
-                int medicineId = rs.getInt("medicine_id");
-                EditMedicine editForm = new EditMedicine();
-                editForm.loadMedicineData(medicineId);
-                editForm.setVisible(true);
-                // Wait for the form to close before refreshing
-                editForm.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        loadMedicineData();
-                    }
-                });
+        int medicineId = (int) inventoryTable.getValueAt(selectedRow, 0);
+        EditMedicine editForm = new EditMedicine();
+        editForm.loadMedicineData(medicineId);
+        editForm.setVisible(true);
+        // Wait for the form to close before refreshing
+        editForm.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                loadMedicineData();
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error loading medicine data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        });
     }//GEN-LAST:event_editMedicineButtonMouseClicked
 
     private void deleteMedicineButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMedicineButtonMouseClicked

@@ -149,8 +149,8 @@ public class PrintRecept extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {
-//        panelPrinter panelprint = new panelPrinter(receipt);
-//        panelprint.printPanel();
+        panelPrinter panelprint = new panelPrinter(receiptPanel);
+        panelprint.printPanel();
     }
 
     /**
