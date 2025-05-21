@@ -170,9 +170,8 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addGap(0, 188, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,15 +284,34 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
             
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                // Start transaction
+                // Get medicine_id from order_items before deleting
+                String getMedicineIdSql = "SELECT medicine_id FROM order_items WHERE order_id = " + orderId;
+                ResultSet rs = db.getData(getMedicineIdSql);
+                int medicineId = -1;
+                if (rs.next()) {
+                    medicineId = rs.getInt("medicine_id");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Medicine not found for this order", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Delete from order_items first
+                String deleteOrderItemsSql = "DELETE FROM order_items WHERE order_id = ?";
+                boolean deleteItemsSuccess = db.executeQuery(deleteOrderItemsSql, orderId);
+                
+                if (!deleteItemsSuccess) {
+                    JOptionPane.showMessageDialog(this, "Failed to delete order items", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Delete from orders
                 String deleteOrderSql = "DELETE FROM orders WHERE order_id = ?";
                 boolean deleteSuccess = db.executeQuery(deleteOrderSql, orderId);
                 
                 if (deleteSuccess) {
                     // Update inventory quantity
-                    String updateStockSql = "UPDATE medicines SET quantity_in_stock = quantity_in_stock + ? " +
-                                          "WHERE medicine_id = (SELECT medicine_id FROM orders WHERE order_id = ?)";
-                    boolean updateSuccess = db.executeQuery(updateStockSql, quantity, orderId);
+                    String updateStockSql = "UPDATE medicines SET quantity_in_stock = quantity_in_stock + ? WHERE medicine_id = ?";
+                    boolean updateSuccess = db.executeQuery(updateStockSql, quantity, medicineId);
                     
                     if (updateSuccess) {
                         JOptionPane.showMessageDialog(this, "Order deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -306,6 +324,7 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error deleting order: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
         }
     }

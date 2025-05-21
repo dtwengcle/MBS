@@ -52,6 +52,7 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             // Add data to table
             while (rs.next()) {
                 Object[] row = {
+                    rs.getInt("medicine_id"),
                     rs.getString("name"),
                     rs.getInt("quantity_in_stock"),
                     rs.getDouble("price")
@@ -154,15 +155,23 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
 
         inventoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Item Name", "Quantity", "Price"
+                "Order ID", "Item Name", "Quantity", "Price"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(inventoryTable);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 600, 320));
@@ -263,9 +272,8 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addGap(0, 188, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

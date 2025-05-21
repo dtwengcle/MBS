@@ -58,6 +58,7 @@ public class LOGIN extends javax.swing.JFrame {
         pass = new javax.swing.JLabel();
         exit = new javax.swing.JPanel();
         ex = new javax.swing.JLabel();
+        forgotPassword = new javax.swing.JLabel();
         login = new javax.swing.JPanel();
         log = new javax.swing.JLabel();
         new_user = new javax.swing.JLabel();
@@ -132,6 +133,14 @@ public class LOGIN extends javax.swing.JFrame {
         );
 
         Login_Panel.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 70, 30));
+
+        forgotPassword.setText("Forgot password?");
+        forgotPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                forgotPasswordMouseClicked(evt);
+            }
+        });
+        Login_Panel.add(forgotPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 390, -1, -1));
 
         log.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         log.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -348,6 +357,12 @@ public class LOGIN extends javax.swing.JFrame {
         ex.setBackground(hoverColor);   
     }//GEN-LAST:event_exMouseExited
 
+    private void forgotPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotPasswordMouseClicked
+        // TODO add your handling code here:
+        new ForgotPassword().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_forgotPasswordMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -388,6 +403,7 @@ public class LOGIN extends javax.swing.JFrame {
     private javax.swing.JLabel Ttile;
     private javax.swing.JLabel ex;
     private javax.swing.JPanel exit;
+    private javax.swing.JLabel forgotPassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
