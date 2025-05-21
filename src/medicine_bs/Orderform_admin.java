@@ -58,6 +58,12 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
             }
         });
         
+        printReceipt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                printReceiptMouseClicked(evt);
+            }
+        });
+        
         //remove border
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
@@ -87,6 +93,7 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         search_bar = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        printReceipt = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(849, 549));
 
@@ -128,6 +135,12 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         refresh1.setText("Refresh");
         refresh1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 80, 30));
+
+        printReceipt.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        printReceipt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        printReceipt.setText("Print Receipt");
+        printReceipt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(printReceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, 120, -1));
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 24)); // NOI18N
         jLabel1.setText("ORDERS");
@@ -378,6 +391,19 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         loadOrderData();
     }
 
+    private void printReceiptMouseClicked(java.awt.event.MouseEvent evt) {
+        int selectedRow = users.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an order to print receipt", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        int orderId = (int) users.getValueAt(selectedRow, 0);
+        PrintRecept receipt = new PrintRecept();
+        receipt.loadOrderData(orderId);
+        receipt.setVisible(true);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addorder;
     private javax.swing.JLabel deleteorder;
@@ -390,5 +416,6 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel refresh1;
     private javax.swing.JTextField search_bar;
     private javax.swing.JTable users;
+    private javax.swing.JLabel printReceipt;
     // End of variables declaration//GEN-END:variables
 }

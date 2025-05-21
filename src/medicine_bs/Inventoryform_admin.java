@@ -100,7 +100,7 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             return;
         }
 
-        String medicineName = (String) inventoryTable.getValueAt(selectedRow, 0);
+        String medicineName = String.valueOf(inventoryTable.getValueAt(selectedRow, 0));
         int confirm = JOptionPane.showConfirmDialog(this, 
             "Are you sure you want to delete " + medicineName + "?", 
             "Confirm Delete", 
@@ -331,7 +331,7 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             return;
         }
 
-        String medicineName = (String) inventoryTable.getValueAt(selectedRow, 0);
+        String medicineName = String.valueOf(inventoryTable.getValueAt(selectedRow, 0));
         try {
             String sql = "SELECT medicine_id FROM medicines WHERE name = '" + medicineName + "'";
             ResultSet rs = db.getData(sql);

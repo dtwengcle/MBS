@@ -6,7 +6,8 @@
 package medicine_bs;
 
 import Admin_internalframe.Profile;
-import javafx.application.Platform;
+import medicine_bs.Orderform_admin;
+
 import javax.swing.JDesktopPane;
 
 
