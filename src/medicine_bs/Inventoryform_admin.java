@@ -22,47 +22,69 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
 
     private connectDB db;
     private DefaultTableModel tableModel;
-
-    /**
-     * Creates new form Inventoryform_admin
-     */
+    
+    
+    
     public Inventoryform_admin() {
-        initComponents();
-        db = new connectDB();
-        tableModel = (DefaultTableModel) inventoryTable.getModel();
-        
-        //remove border
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
-        BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
-        bi.setNorthPane(null);
-        
-        // Load initial data
-        loadMedicineData();
-    }
+    initComponents();
+    db = new connectDB();
+    tableModel = new DefaultTableModel(
+        new Object[][]{},
+        new String[]{"Order ID", "Item Name", "Quantity", "Price", "Expiration Date", "Expiring Soon?"}
+    ) {
+        final boolean[] canEdit = new boolean[]{
+            false, true, true, true, false, false
+        };
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return canEdit[column];
+        }
+    };
+    inventoryTable.setModel(tableModel);
+    loadMedicineData(); // Make sure you call it here
+}
 
     private void loadMedicineData() {
-        try {
-            // Clear existing data
-            tableModel.setRowCount(0);
-            
-            // Get data from database
-            String sql = "SELECT * FROM medicines";
-            ResultSet rs = db.getData(sql);
-            
-            // Add data to table
-            while (rs.next()) {
-                Object[] row = {
-                    rs.getInt("medicine_id"),
-                    rs.getString("name"),
-                    rs.getInt("quantity_in_stock"),
-                    rs.getDouble("price")
-                };
-                tableModel.addRow(row);
+    try {
+        tableModel.setRowCount(0);
+        String sql = "SELECT * FROM medicines";
+        ResultSet rs = db.getData(sql);
+
+        java.util.Date today = new java.util.Date();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+
+        while (rs.next()) {
+            java.sql.Date expirationDate = rs.getDate("expiration_date");
+            String expiration = (expirationDate != null) ? expirationDate.toString() : "N/A";
+
+            // Compute if expiring within 1 year
+            String expiringSoon = "N/A";
+            if (expirationDate != null) {
+                cal.setTime(today);
+                cal.add(java.util.Calendar.YEAR, 1);
+                java.util.Date oneYearFromNow = cal.getTime();
+
+                expiringSoon = expirationDate.before(oneYearFromNow) ? "Yes" : "No";
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error loading data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+            Object[] row = {
+                rs.getInt("medicine_id"),
+                rs.getString("name"),
+                rs.getInt("quantity_in_stock"),
+                rs.getDouble("price"),
+                expiration,
+                expiringSoon
+            };
+            tableModel.addRow(row);
         }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error loading data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+
+
+
+}
 
     private void searchMedicine(String searchText) {
         try {
@@ -70,7 +92,7 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
             tableModel.setRowCount(0);
             
             // Search in database
-            String sql = "SELECT * FROM medicines WHERE name LIKE ? OR description LIKE '"+searchText+"'";
+            String sql = "SELECT * FROM medicines WHERE name LIKE '%" + searchText + "%' OR description LIKE '%" + searchText + "%'";
             ResultSet rs = db.getData(sql);
             
             // Add matching data to table
@@ -79,8 +101,10 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
                     rs.getInt("medicine_id"),
                     rs.getString("name"),
                     rs.getInt("quantity_in_stock"),
-                    rs.getDouble("price")
+                    rs.getDouble("price"),
+                    rs.getDate("expiration_date") != null ? rs.getDate("expiration_date").toString() : "N/A"
                 };
+
                 tableModel.addRow(row);
             }
         } catch (SQLException ex) {
