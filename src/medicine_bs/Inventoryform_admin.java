@@ -113,36 +113,35 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
     }
 
     private void deleteSelectedMedicine() {
-        int selectedRow = inventoryTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a medicine to delete", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    int selectedRow = inventoryTable.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a medicine to delete", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        int medicineId = (int) inventoryTable.getValueAt(selectedRow, 0);
-        String medicineName = (String) inventoryTable.getValueAt(selectedRow, 1);
-        
-        int confirm = JOptionPane.showConfirmDialog(this, 
-            "Are you sure you want to delete " + medicineName + "?", 
-            "Confirm Delete", 
-            JOptionPane.YES_NO_OPTION);
-            
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                String sql = "DELETE FROM medicines WHERE medicine_id = ?";
-                boolean success = db.executeQuery(sql, medicineId);
-                
-                if (success) {
-                    JOptionPane.showMessageDialog(this, "Medicine deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    loadMedicineData(); // Refresh table
-                } else {
-                    JOptionPane.showMessageDialog(this, "Failed to delete medicine", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error deleting medicine: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    int medicineId = (int) inventoryTable.getValueAt(selectedRow, 0);
+    String medicineName = (String) inventoryTable.getValueAt(selectedRow, 1);
+
+    int confirm = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to delete " + medicineName + "?",
+        "Confirm Delete",
+        JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            String sql = "DELETE FROM medicines WHERE medicine_id = ?";
+            boolean success = connectDB.executeUpdate(sql, medicineId); // updated here
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Medicine deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                loadMedicineData(); // Refresh table
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to delete medicine", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error deleting medicine: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
