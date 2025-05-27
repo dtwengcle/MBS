@@ -252,9 +252,9 @@ public class AddOrder extends javax.swing.JFrame {
         jLabel5.setText("Total Price");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, 140, 20));
 
+        totalPriceField.setEditable(false);
         totalPriceField.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
         totalPriceField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        totalPriceField.setEditable(false);
         jPanel1.add(totalPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, 140, 40));
 
         addButton.setBackground(new java.awt.Color(255, 102, 102));

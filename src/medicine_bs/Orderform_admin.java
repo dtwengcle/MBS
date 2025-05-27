@@ -58,11 +58,8 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
             }
         });
         
-        printReceipt.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                printReceiptMouseClicked(evt);
-            }
-        });
+       
+   
         
         //remove border
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
@@ -93,7 +90,6 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         search_bar = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        printReceipt = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(849, 549));
 
@@ -136,12 +132,6 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         refresh1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 80, 30));
 
-        printReceipt.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        printReceipt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        printReceipt.setText("Print Receipt");
-        printReceipt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(printReceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, 120, -1));
-
         jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 24)); // NOI18N
         jLabel1.setText("ORDERS");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, -1));
@@ -170,11 +160,12 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         });
         jPanel1.add(search_bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 170, 25));
 
-        jPanel2.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/s2.png"))); // NOI18N
         jLabel4.setText("jLabel4");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 20, -1));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 20, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 25, 25));
 
@@ -184,7 +175,7 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 188, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -416,6 +407,5 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel refresh1;
     private javax.swing.JTextField search_bar;
     private javax.swing.JTable users;
-    private javax.swing.JLabel printReceipt;
     // End of variables declaration//GEN-END:variables
 }

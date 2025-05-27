@@ -37,10 +37,11 @@ public class Staff_Dashboard extends javax.swing.JFrame {
         userpanel1 = new javax.swing.JPanel();
         users1 = new javax.swing.JLabel();
         Dashboard1 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         userpanel2 = new javax.swing.JPanel();
         users2 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        users3 = new javax.swing.JLabel();
         staffmaind = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,11 +82,6 @@ public class Staff_Dashboard extends javax.swing.JFrame {
         Dashboard1.setText("Dashboard");
         jPanel2.add(Dashboard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 110, 20));
 
-        jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout.png"))); // NOI18N
-        jLabel1.setText("Logout");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 510, -1, -1));
-
         userpanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         userpanel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -116,7 +112,38 @@ public class Staff_Dashboard extends javax.swing.JFrame {
         });
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 550));
+        users3.setFont(new java.awt.Font("Calibri Light", 1, 16)); // NOI18N
+        users3.setText("Pharmacist");
+        users3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                users3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(users3)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(users3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, -1, 30));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 510));
 
         javax.swing.GroupLayout staffmaindLayout = new javax.swing.GroupLayout(staffmaind);
         staffmaind.setLayout(staffmaindLayout);
@@ -165,6 +192,10 @@ public class Staff_Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void users3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_users3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_users3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -203,15 +234,16 @@ public class Staff_Dashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Dashboard;
     private javax.swing.JLabel Dashboard1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel logo;
     private javax.swing.JDesktopPane staffmaind;
     private javax.swing.JPanel userpanel1;
     private javax.swing.JPanel userpanel2;
     private javax.swing.JLabel users1;
     private javax.swing.JLabel users2;
+    private javax.swing.JLabel users3;
     // End of variables declaration//GEN-END:variables
 }

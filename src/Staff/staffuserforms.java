@@ -13,7 +13,7 @@ import net.proteanit.sql.DbUtils;
 public class staffuserforms extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form staffuserforms
+     
      */
     public staffuserforms() {
         initComponents();
@@ -28,7 +28,7 @@ public class staffuserforms extends javax.swing.JInternalFrame {
         try{
             connectDB dbc = new connectDB();
             try (ResultSet rs = dbc.getData("SELECT * FROM users")) {
-                staffusers.setModel(DbUtils.resultSetToTableModel(rs));
+                users.setModel(DbUtils.resultSetToTableModel(rs));
             }
         }catch(SQLException ex){
             System.out.println("Errors: "+ex.getMessage());
@@ -53,11 +53,12 @@ public class staffuserforms extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         refresh = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        staffusers = new javax.swing.JTable();
+        users = new javax.swing.JTable();
 
-        user_tbl.setBackground(new java.awt.Color(255, 153, 153));
+        user_tbl.setBackground(new java.awt.Color(255, 204, 204));
         user_tbl.setMinimumSize(new java.awt.Dimension(630, 510));
         user_tbl.setPreferredSize(new java.awt.Dimension(630, 510));
         user_tbl.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -72,12 +73,12 @@ public class staffuserforms extends javax.swing.JInternalFrame {
 
         add.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         add.setText("Add user");
-        addUsers.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, 30));
+        addUsers.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add-users.png"))); // NOI18N
-        addUsers.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 30, 30));
+        addUsers.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 30, 30));
 
-        user_tbl.add(addUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, 110, 30));
+        user_tbl.add(addUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 110, 30));
 
         refresh.setBackground(new java.awt.Color(255, 153, 153));
         refresh.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -88,13 +89,19 @@ public class staffuserforms extends javax.swing.JInternalFrame {
         refresh.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         refresh1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        refresh1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         refresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
         refresh1.setText("Refresh");
-        refresh.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, 30));
+        refresh.add(refresh1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 30));
 
-        user_tbl.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 450, 110, 30));
+        user_tbl.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 440, 110, 30));
 
-        staffusers.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 24)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("ORDERS USERS");
+        user_tbl.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 180, -1));
+
+        users.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -105,25 +112,21 @@ public class staffuserforms extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(staffusers);
+        jScrollPane1.setViewportView(users);
 
         jScrollPane2.setViewportView(jScrollPane1);
 
-        user_tbl.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 510, 430));
+        user_tbl.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 490, 350));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 79, Short.MAX_VALUE))
+            .addComponent(user_tbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -144,11 +147,12 @@ public class staffuserforms extends javax.swing.JInternalFrame {
     private javax.swing.JLabel add;
     private javax.swing.JPanel addUsers;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
-    private javax.swing.JTable staffusers;
     private javax.swing.JPanel user_tbl;
+    private javax.swing.JTable users;
     // End of variables declaration//GEN-END:variables
 }
