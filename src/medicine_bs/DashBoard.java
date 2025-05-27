@@ -254,6 +254,12 @@ public class DashBoard extends javax.swing.JFrame {
 
         jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 100, 30));
 
+        jPanel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel6MouseClicked(evt);
+            }
+        });
+
         jLabel6.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         jLabel6.setText("LOGS");
 
@@ -328,8 +334,8 @@ public class DashBoard extends javax.swing.JFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
-        Profile pf = new Profile();
-        pf.setVisible(true);
+        profile pf = new profile();
+        maindesktop.add(pf).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void users1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_users1MouseClicked
@@ -342,6 +348,11 @@ public class DashBoard extends javax.swing.JFrame {
         // TODO add your handling code here:
         maindesktop.add(new Settings()).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
+        logs lo = new logs();
+        maindesktop.add(lo).setVisible(true);
+    }//GEN-LAST:event_jPanel6MouseClicked
 
     /**
      * @param args the command line arguments

@@ -5,6 +5,7 @@
  */
 package Admin_internalframe;
 
+import config.Session;
 import config.connectDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -155,6 +156,11 @@ public class Add_user extends javax.swing.JFrame {
                 jButton1MouseClicked(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 140, 40));
 
         genderField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
@@ -294,24 +300,33 @@ public class Add_user extends javax.swing.JFrame {
             }
 
             // **Insert users data into the database**
-            String insertSql = "INSERT INTO users (name, username, email, password, gender, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // **Insert users data into the database**
+String insertSql = "INSERT INTO users (name, username, email, password, gender, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            try (PreparedStatement pst = cn.prepareStatement(insertSql)) {
-                pst.setString(1, u_name);
-                pst.setString(2, usern);
-                pst.setString(3, email);
-                pst.setString(4, pass1); // TODO: Hash password before saving
-                pst.setString(5, genderSelected);
-                pst.setString(6, roleSelected);
-                pst.setString(7, "Active");
+try (PreparedStatement pst = cn.prepareStatement(insertSql)) {
+    pst.setString(1, u_name);
+    pst.setString(2, usern);
+    pst.setString(3, email);
+    pst.setString(4, pass1); // TODO: Hash password before saving
+    pst.setString(5, genderSelected);
+    pst.setString(6, roleSelected);
+    pst.setString(7, "Active");
 
-                int result = pst.executeUpdate();
-                if (result == 1) {
-                    JOptionPane.showMessageDialog(null, "Successfully Added User!");
-                    SwingUtilities.getWindowAncestor(nameField).dispose(); // Close the registration form
-                } else {
-                    JOptionPane.showMessageDialog(null, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+    int result = pst.executeUpdate();
+    if (result == 1) {
+        JOptionPane.showMessageDialog(null, "Successfully Added User!");
+
+        // Insert log for the user addition
+        Session sess = Session.getInstance();
+        connectDB logCon = new connectDB();
+        logCon.insertLog(sess.getId(), "User with ID " + sess.getId() + " added new user: " + usern);
+
+        SwingUtilities.getWindowAncestor(nameField).dispose(); // Close the registration form
+    } else {
+        JOptionPane.showMessageDialog(null, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -323,6 +338,10 @@ public class Add_user extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

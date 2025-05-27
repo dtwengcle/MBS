@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class connectDB {
     private static Connection connect;
@@ -67,6 +69,23 @@ public class connectDB {
         
         
     }
+    
+    public void insertLog(int userId, String action) {
+    try {
+        Connection cn = getConnection();
+        String sql = "INSERT INTO logs (user_id, action, date_time) VALUES (?, ?, ?)";
+        PreparedStatement pst = cn.prepareStatement(sql);
+        pst.setInt(1, userId);
+        pst.setString(2, action);
+        pst.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+        pst.executeUpdate();
+        pst.close();
+        cn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 
     
     

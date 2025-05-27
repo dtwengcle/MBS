@@ -178,6 +178,11 @@ public class Registers extends javax.swing.JFrame {
                 registerButtonMouseClicked(evt);
             }
         });
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
         Login_Panel.add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 310, 110, 40));
 
         jPanel1.setBackground(new java.awt.Color(255, 102, 102));
@@ -395,6 +400,10 @@ public class Registers extends javax.swing.JFrame {
     private void roleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_roleActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registerButtonActionPerformed
     
     
     /**

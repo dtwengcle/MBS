@@ -5,6 +5,8 @@
  */
 package Admin_internalframe;
 
+import config.Session;
+import config.connectDB;
 import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import java.awt.Color;
@@ -241,19 +243,35 @@ public class Edit_user extends javax.swing.JFrame {
         emailField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         try {
-            // Update the user in the database
-            String query = "UPDATE users SET name=?, username=?, email=?, role=?, gender=? WHERE username=?";
-            Object[] params = {name, username, email, selectedRole, gender, currentUsername};
-            
-            if (config.connectDB.executeQuery(query, params)) {
-                JOptionPane.showMessageDialog(this, "User updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose(); // Close the window after successful update
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to update user.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    // Update the user in the database
+    String query = "UPDATE users SET name=?, username=?, email=?, role=?, gender=? WHERE username=?";
+    Object[] params = {name, username, email, selectedRole, gender, currentUsername};
+    
+    if (config.connectDB.executeQuery(query, params)) {
+        // Log success
+        Session sess = Session.getInstance();
+        connectDB logCon = new connectDB();
+        logCon.insertLog(sess.getId(), "User with ID " + sess.getId() + " updated user: " + username);
+
+        JOptionPane.showMessageDialog(this, "User updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose(); // Close the window after successful update
+    } else {
+        // Log failure
+        Session sess = Session.getInstance();
+        connectDB logCon = new connectDB();
+        logCon.insertLog(sess.getId(), "User with ID " + sess.getId() + " failed to update user: " + username);
+
+        JOptionPane.showMessageDialog(this, "Failed to update user.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+} catch (Exception ex) {
+    // Log exception
+    Session sess = Session.getInstance();
+    connectDB logCon = new connectDB();
+    logCon.insertLog(sess.getId(), "User with ID " + sess.getId() + " encountered error updating user: " + username + " - " + ex.getMessage());
+
+    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+
     }
 
     /**

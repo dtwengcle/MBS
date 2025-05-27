@@ -2,6 +2,7 @@ package medicine_bs;
 
 import Admin_internalframe.Edit_user;
 import Admin_internalframe.Add_user;
+import config.Session;
 import config.connectDB;
 import java.awt.Color;
 import java.awt.Font;
@@ -283,7 +284,7 @@ public class users extends javax.swing.JInternalFrame {
     }
 
     private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
-//         TODO add your handling code here:
+
                 Add_user addUserFrame = Add_user.getInstance();
         
         if (addUserFrame == null || !addUserFrame.isDisplayable()) {
@@ -320,26 +321,37 @@ public class users extends javax.swing.JInternalFrame {
 
     private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
         // TODO add your handling code here:
-        int row = users.getSelectedRow(); 
+int row = users.getSelectedRow(); 
 
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+if (row == -1) {
+    JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+    return;
+}
 
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
+int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+if (confirm != JOptionPane.YES_OPTION) {
+    return;
+}
 
-        String username = users.getValueAt(row, 1).toString(); 
+String username = users.getValueAt(row, 1).toString(); 
 
-        if (connectDB.executeQuery("DELETE FROM users WHERE username = '" + username + "'")) {
-            displayData();
-            JOptionPane.showMessageDialog(this, "User deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to delete user.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+if (connectDB.executeQuery("DELETE FROM users WHERE username = '" + username + "'")) {
+    // Log success
+    Session sess = Session.getInstance();
+    connectDB logCon = new connectDB();
+    logCon.insertLog(sess.getId(), "User with ID " + sess.getId() + " deleted user: " + username);
+
+    displayData();
+    JOptionPane.showMessageDialog(this, "User deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
+} else {
+    // Log failure
+    Session sess = Session.getInstance();
+    connectDB logCon = new connectDB();
+    logCon.insertLog(sess.getId(), "User with ID " + sess.getId() + " failed to delete user: " + username);
+
+    JOptionPane.showMessageDialog(this, "Failed to delete user.", "Error", JOptionPane.ERROR_MESSAGE);
+}
+
     }//GEN-LAST:event_deleteMouseClicked
 
     private void refresh1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refresh1MouseClicked
