@@ -37,6 +37,9 @@ public class profile extends javax.swing.JInternalFrame {
         initComponents();
         loadProfileData();
         
+        profile.setPreferredSize(new Dimension(150, 150));
+        this.pack(); // Ensures the layout is computed, giving components their sizes
+        
           //remove border
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
@@ -51,6 +54,8 @@ public class profile extends javax.swing.JInternalFrame {
             emailField.setText(session.getEmail());
             genderField.setText(session.getGender());
             roleField.setText(session.getRole());
+            loadProfilePicture(session.getId()); 
+            
         }
     }
     
@@ -117,11 +122,11 @@ public class profile extends javax.swing.JInternalFrame {
     }
 
 
-        private void loadProfilePicture(String userId) {
+        private void loadProfilePicture(int userId) {
             try (Connection con = new connectDB().getConnection();
-                 PreparedStatement pst = con.prepareStatement("SELECT profile_pic FROM user WHERE user_id = ?")) {
+                 PreparedStatement pst = con.prepareStatement("SELECT profile_pic FROM users WHERE id = ?")) {
 
-                pst.setString(1, userId);
+                pst.setInt(1, userId);
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {
                         String fileName = rs.getString("profile_pic");
@@ -182,6 +187,24 @@ public class profile extends javax.swing.JInternalFrame {
         profile = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(640, 550));
@@ -372,6 +395,10 @@ public class profile extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Error uploading image: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+       
+    }//GEN-LAST:event_formInternalFrameActivated
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
