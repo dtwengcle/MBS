@@ -130,7 +130,7 @@ public class Inventoryform_admin extends javax.swing.JInternalFrame {
     if (confirm == JOptionPane.YES_OPTION) {
         try {
             String sql = "DELETE FROM medicines WHERE medicine_id = ?";
-            boolean success = connectDB.executeUpdate(sql, medicineId); // updated here
+            boolean success = connectDB.executeQuery(sql, medicineId); // updated here
             if (success) {
                 JOptionPane.showMessageDialog(this, "Medicine deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 loadMedicineData(); // Refresh table

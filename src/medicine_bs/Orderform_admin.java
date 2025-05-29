@@ -90,6 +90,7 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
         search_bar = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(849, 549));
 
@@ -169,6 +170,14 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 25, 25));
 
+        jLabel2.setText("print");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, 90, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,6 +193,19 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        int selectedRow = users.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an order to print receipt", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        int orderId = (int) users.getValueAt(selectedRow, 0);
+        PrintRecept receipt = new PrintRecept();
+        receipt.loadOrderData(orderId);
+        receipt.setVisible(true);
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     private void loadOrderData() {
         try {
@@ -399,6 +421,7 @@ public class Orderform_admin extends javax.swing.JInternalFrame {
     private javax.swing.JLabel addorder;
     private javax.swing.JLabel deleteorder;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

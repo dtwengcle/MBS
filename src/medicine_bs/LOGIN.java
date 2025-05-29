@@ -249,95 +249,95 @@ public class LOGIN extends javax.swing.JFrame {
     private void logMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logMouseClicked
         Session session = new Session();
 
-String username = ufield.getText().trim();
-String password = new String(pfield.getPassword()).trim();
+        String username = ufield.getText().trim();
+        String password = new String(pfield.getPassword()).trim();
 
-// === Field Validation ===
-if (username.isEmpty()) {
-    ufield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-    JOptionPane.showMessageDialog(null, "Username cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-if (password.isEmpty()) {
-    pfield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-    JOptionPane.showMessageDialog(null, "Password cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-// Reset borders after validation passes
-ufield.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-pfield.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-
-// === Proceed with Login ===
-connectDB con = new connectDB();
-Connection cn = con.getConnection();
-
-if (cn == null) {
-    JOptionPane.showMessageDialog(null, "Failed to connect to database.", "Connection Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
-
-String hashedPassword = hashPassword(password);
-String sql = "SELECT * FROM users WHERE username = ?";
-
-try {
-    PreparedStatement pst = cn.prepareStatement(sql);
-    pst.setString(1, username);
-    ResultSet rs = pst.executeQuery();
-
-    if (rs.next()) {
-        int id = rs.getInt("id");
-        String name = rs.getString("name");
-        String uname = rs.getString("username");
-        String gender = rs.getString("gender");
-        String email = rs.getString("email");
-        String storedPassword = rs.getString("password");
-        String roleFromDB = rs.getString("role");
-        String status = rs.getString("status");
-
-        if (storedPassword.equals(hashedPassword)) {
-            if (!"Active".equalsIgnoreCase(status)) {
-                JOptionPane.showMessageDialog(null, "Account not yet approved!", "Pending Approval", JOptionPane.WARNING_MESSAGE);
-                con.insertLog(id, "Login attempt blocked - account not approved.");
-                return;
-            }
-
-            // Start user session
-            session.setSession(id, name, uname, gender, roleFromDB, email, status);
-            con.insertLog(id, "User with ID " + id + " logged in.");
-
-            // Redirect based on role
-            if ("Admin".equalsIgnoreCase(roleFromDB)) {
-                new DashBoard().setVisible(true);
-                this.dispose();
-            } else if ("Staff".equalsIgnoreCase(roleFromDB)) {
-                new Staff_Dashboard().setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Invalid role assigned.", "Login Error", JOptionPane.ERROR_MESSAGE);
-                con.insertLog(id, "Login failed - invalid role.");
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Incorrect password.", "Login Error", JOptionPane.ERROR_MESSAGE);
-            con.insertLog(id, "Login failed - incorrect password.");
+        // === Field Validation ===
+        if (username.isEmpty()) {
+            ufield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Username cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
-    } else {
-        JOptionPane.showMessageDialog(null, "Username not found.", "Login Error", JOptionPane.ERROR_MESSAGE);
-        // Avoid logging a foreign key error with ID 0
-        // Optionally log this in a separate logging table not bound by FK
-    }
+        if (password.isEmpty()) {
+            pfield.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            JOptionPane.showMessageDialog(null, "Password cannot be empty.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    rs.close();
-    pst.close();
-    cn.close();
+        // Reset borders after validation passes
+        ufield.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        pfield.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
-} catch (SQLException ex) {
-    JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    ex.printStackTrace();
-}
+        // === Proceed with Login ===
+        connectDB con = new connectDB();
+        Connection cn = con.getConnection();
+ 
+        if (cn == null) {
+            JOptionPane.showMessageDialog(null, "Failed to connect to database.", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String hashedPassword = hashPassword(password);
+        String sql = "SELECT * FROM users WHERE username = ?";
+
+        try {
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setString(1, username);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String uname = rs.getString("username");
+                String gender = rs.getString("gender");
+                String email = rs.getString("email");
+                String storedPassword = rs.getString("password");
+                String roleFromDB = rs.getString("role");
+                String status = rs.getString("status");
+
+                if (storedPassword.equals(hashedPassword)) {
+                    if (!"Active".equalsIgnoreCase(status)) {
+                        JOptionPane.showMessageDialog(null, "Account not yet approved!", "Pending Approval", JOptionPane.WARNING_MESSAGE);
+                        con.insertLog(id, "Login attempt blocked - account not approved.");
+                        return;
+                    }
+
+                    // Start user session
+                    session.setSession(id, name, uname, gender, roleFromDB, email, status);
+                    con.insertLog(id, "User with ID " + id + " logged in.");
+
+                    // Redirect based on role
+                    if ("Admin".equalsIgnoreCase(roleFromDB)) {
+                        new DashBoard().setVisible(true);
+                        this.dispose();
+                    } else if ("Staff".equalsIgnoreCase(roleFromDB)) {
+                        new Staff_Dashboard().setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid role assigned.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                        con.insertLog(id, "Login failed - invalid role.");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    con.insertLog(id, "Login failed - incorrect password.");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Username not found.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                // Avoid logging a foreign key error with ID 0
+                // Optionally log this in a separate logging table not bound by FK
+            }
+
+            rs.close();
+            pst.close();
+            cn.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
 
 
     }//GEN-LAST:event_logMouseClicked

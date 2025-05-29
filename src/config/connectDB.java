@@ -12,10 +12,6 @@ import java.time.LocalDateTime;
 public class connectDB {
     private static Connection connect;
 
-    public static boolean executeUpdate(String sql, int medicineId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     public connectDB(){
         try {
             connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/deguma", "root", "");
